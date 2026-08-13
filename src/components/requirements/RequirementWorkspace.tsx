@@ -264,287 +264,50 @@ export default function RequirementsWorkspace({
     }, [sourceWorks]);
 
     return (
-        <div className="relative min-h-[calc(100vh-120px)] pb-10">
-            {/* LEFT + RIGHT WORKSPACE */}
-            <div className="grid min-h-[calc(100vh-130px)] grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="relative min-h-0 w-full pb-12">
+            <div className="grid min-h-[calc(100vh-130px)] grid-cols-1 gap-3 p-2 sm:gap-4 sm:p-3 lg:grid-cols-2 lg:p-4">
+                <section
+                    className="relative flex min-h-[560px] min-w-0 flex-col overflow-hidden rounded-[8px] border border-[#c7dce8] bg-white shadow-[0_8px_28px_rgba(0,59,99,0.09)] lg:min-h-0"
+                >
+                    {/* TOP ACCENT */}
 
-                {/* LEFT */}
-                <section className="relative flex min-h-0 flex-col rounded-lg border border-slate-200 bg-white shadow-sm">
-                    {/* HEADER */}
-                    <div className="flex h-10 shrink-0 items-center gap-3 border-b-2 border-[#26345d] bg-[#eef8ff] px-3">
-                        <div className="flex items-center gap-2 whitespace-nowrap">
-                            <span className="h-2 w-2 rounded-full bg-[#2563eb]" />
-
-                            <h2 className="text-[16px] font-bold text-[#10234a]">
-                                PERMISSIBLE WORKS
-                            </h2>
-                        </div>
-
-                        <input
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Search works..."
-                            className="h-7 w-[55%] rounded-md border border-slate-300 bg-white px-3 text-[11px] outline-none focus:border-[#4b9bd6]"
-                        />
-
-                        <div className="relative">
-                            <button
-                                type="button"
-                                onClick={() => setShowFilters((value) => !value)}
-                                className="relative flex h-7 w-7 items-center justify-center rounded-md text-[#18315c] hover:bg-slate-100"
-                                title="Filter"
-                            >
-                                {/* Filter / Sliders Icon */}
-                                <svg
-                                    width="15"
-                                    height="15"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                >
-                                    <line x1="4" y1="6" x2="20" y2="6" />
-                                    <circle cx="9" cy="6" r="2" fill="white" />
-
-                                    <line x1="4" y1="12" x2="20" y2="12" />
-                                    <circle cx="15" cy="12" r="2" fill="white" />
-
-                                    <line x1="4" y1="18" x2="20" y2="18" />
-                                    <circle cx="11" cy="18" r="2" fill="white" />
-                                </svg>
-
-                                {(selectedThemes.length > 0 ||
-                                    selectedSubThemes.length > 0 ||
-                                    selectedTypes.length > 0) && (
-                                        <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#4b9bd6] px-1 text-[8px] font-bold text-white">
-                                            {selectedThemes.length +
-                                                selectedSubThemes.length +
-                                                selectedTypes.length}
-                                        </span>
-                                    )}
-                            </button>
-
-
-                        </div>
-
-                        <span className="ml-auto whitespace-nowrap text-[15px] font-bold text-[#10234a]">
-                            {filteredWorks.length} WORKS
-                        </span>
-
-                        {/* ================= FILTER PANEL ================= */}
-
-                        {showFilters && (
-                            <div className="absolute left-0 top-9 z-[2000] w-full max-w-[calc(100vw-40px)] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xl">
-
-                                {/* FILTER HEADER */}
-                                <div className="flex h-8 items-center justify-between border-b border-slate-200 bg-white px-3">
-                                    <span className="text-[12px] font-semibold text-slate-700">
-                                        Filter by
-                                    </span>
-
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowFilters(false)}
-                                        className="text-[16px] font-semibold text-slate-400 hover:text-slate-700"
-                                    >
-                                        ×
-                                    </button>
-                                </div>
-
-                                {/* FILTER CONTENT */}
-                                <div className="max-h-[320px] overflow-y-auto px-3 py-1">
-
-                                    {/* THEME */}
-                                    <div className="mb-2">
-                                        <div className="mb-1 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
-                                            THEME
-                                        </div>
-
-                                        <div className="flex flex-wrap gap-2">
-                                            {[
-                                                {
-                                                    label: "Water",
-                                                    value: "Water Security",
-                                                },
-                                                {
-                                                    label: "Rural",
-                                                    value: "Rural Infrastructure",
-                                                },
-                                                {
-                                                    label: "Livelihood",
-                                                    value: "Livelihood Infrastructure",
-                                                },
-                                                {
-                                                    label: "Climate",
-                                                    value: "Climate Resilience",
-                                                },
-                                            ].map((theme) => {
-                                                const active = selectedThemes.includes(theme.value);
-
-                                                return (
-                                                    <button
-                                                        key={theme.value}
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setSelectedThemes((current) =>
-                                                                active
-                                                                    ? current.filter(
-                                                                        (item) => item !== theme.value
-                                                                    )
-                                                                    : [...current, theme.value]
-                                                            );
-                                                        }}
-                                                        className={`rounded-full border px-3 py-1 text-[10px] transition ${active
-                                                            ? "border-[#4b9bd6] bg-[#4b9bd6] font-semibold text-white"
-                                                            : "border-slate-300 bg-white text-slate-600 hover:border-[#4b9bd6]"
-                                                            }`}
-                                                    >
-                                                        {theme.label}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    {/* TYPE */}
-                                    <div className="mb-2">
-                                        <div className="mb-1 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
-                                            TYPE
-                                        </div>
-
-                                        <div className="flex gap-2">
-                                            {(["New", "Repair"] as const).map((type) => {
-                                                const active = selectedTypes.includes(type);
-
-                                                return (
-                                                    <button
-                                                        key={type}
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setSelectedTypes((current) =>
-                                                                active
-                                                                    ? current.filter(
-                                                                        (item) => item !== type
-                                                                    )
-                                                                    : [...current, type]
-                                                            );
-                                                        }}
-                                                        className={`rounded-full border px-4 py-1 text-[10px] transition ${active
-                                                            ? "border-[#4b9bd6] bg-[#4b9bd6] font-semibold text-white"
-                                                            : "border-slate-300 bg-white text-slate-600 hover:border-[#4b9bd6]"
-                                                            }`}
-                                                    >
-                                                        {type}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    {/* SUB CATEGORY */}
-                                    <div className="mb-2">
-                                        <div className="mb-1 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
-                                            SUB CATEGORY
-                                        </div>
-
-                                        <div className="flex flex-wrap gap-2">
-                                            {subThemeOptions.map((subTheme) => {
-                                                const active =
-                                                    selectedSubThemes.includes(subTheme);
-
-                                                return (
-                                                    <button
-                                                        key={subTheme}
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setSelectedSubThemes((current) =>
-                                                                active
-                                                                    ? current.filter(
-                                                                        (item) => item !== subTheme
-                                                                    )
-                                                                    : [...current, subTheme]
-                                                            );
-                                                        }}
-                                                        className={`rounded-full border px-3 py-1 text-[10px] transition ${active
-                                                            ? "border-[#4b9bd6] bg-[#4b9bd6] font-semibold text-white"
-                                                            : "border-slate-300 bg-white text-slate-600 hover:border-[#4b9bd6]"
-                                                            }`}
-                                                    >
-                                                        {subTheme}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    {/* CLUSTER */}
-                                    <div className="mb-2">
-                                        <div className="mb-1 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
-                                            CLUSTER
-                                        </div>
-
-                                        <div className="flex flex-wrap gap-2">
-                                            {[
-                                                "Agriculture",
-                                                "NRM",
-                                                "Infrastructure",
-                                            ].map((cluster) => (
-                                                <button
-                                                    key={cluster}
-                                                    type="button"
-                                                    className="rounded-full border border-slate-300 bg-white px-3 py-1 text-[10px] text-slate-600 hover:border-[#4b9bd6]"
-                                                >
-                                                    {cluster}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* RIDGE */}
-                                    <div>
-                                        <div className="mb-1 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
-                                            RIDGE
-                                        </div>
-
-                                        <div className="flex flex-wrap gap-2">
-                                            {[
-                                                "Upper Ridge",
-                                                "Lower Ridge",
-                                                "Middle Ridge",
-                                            ].map((ridge) => (
-                                                <button
-                                                    key={ridge}
-                                                    type="button"
-                                                    className="rounded-full border border-slate-300 bg-white px-3 py-1 text-[10px] text-slate-600 hover:border-[#4b9bd6]"
-                                                >
-                                                    {ridge}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* FOOTER */}
-                                <div className="flex justify-end border-t border-slate-200 px-3 py-2">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setSelectedThemes([]);
-                                            setSelectedSubThemes([]);
-                                            setSelectedTypes([]);
-                                            setActiveCategory(null);
-                                        }}
-                                        className="text-[10px] font-medium text-[#078aca] hover:underline"
-                                    >
-                                        Clear all
-                                    </button>
-                                </div>
-                            </div>
-                        )}
+                    <div className="absolute left-0 right-0 top-0 z-30 flex h-[4px]">
+                        <div className="flex-1 bg-[#075a91]" />
+                        <div className="w-16 bg-[#f58220]" />
                     </div>
 
-                    {/* TABS */}
+
+                    {/* HEADER */}
+
+                    <div className="shrink-0 border-b border-[#d7e5ed] bg-gradient-to-r from-[#f3faff] via-white to-[#fffaf5] pt-[4px]">
+
+                        <div className="flex min-h-[58px] items-center gap-2 px-3 py-2 sm:px-4">
+
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[5px] bg-[#075a91] text-white shadow-sm">
+                                <span className="text-[9px] font-extrabold">
+                                    GP
+                                </span>
+                            </div>
+
+                            <div className="min-w-0">
+
+                                <h2 className="truncate text-[12px] font-extrabold tracking-[0.6px] text-[#003b63] sm:text-[14px]">
+                                    PERMISSIBLE WORKS
+                                </h2>
+
+                                <p className="hidden text-[7px] text-slate-400 sm:block">
+                                    Select works for VGP requirements
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* SOURCE TABS */}
+
                     <RequirementsSourceTabs
                         activeTab={activeTab}
                         onChange={(tab) => {
@@ -553,33 +316,49 @@ export default function RequirementsWorkspace({
                         }}
                     />
 
+
                     {/* CATEGORY SUMMARY */}
-                    <div className="grid h-14 shrink-0 grid-cols-4 border-b border-slate-200">
+
+                    <div className="grid h-16 shrink-0 grid-cols-4 border-b border-[#dce7ed] bg-white">
+
                         {categoryCounts.map((category) => {
-                            const active = activeCategory === category.key;
+
+                            const active =
+                                activeCategory === category.key;
 
                             return (
                                 <button
                                     key={category.key}
                                     type="button"
                                     onClick={() =>
-                                        setActiveCategory(active ? null : category.key)
+                                        setActiveCategory(
+                                            active ? null : category.key
+                                        )
                                     }
-                                    className={`flex flex-col items-center justify-center border-r border-slate-200 transition ${active ? "bg-slate-50" : "bg-white"
+                                    className={`group flex cursor-pointer flex-col items-center justify-center border-r border-[#e2ebf0] transition last:border-r-0 ${active
+                                        ? "bg-[#eef7fb]"
+                                        : "bg-white hover:bg-[#f7fbfd]"
                                         }`}
                                 >
+
                                     <span
-                                        className={`text-[18px] font-bold ${category.color}`}
+                                        className={`text-[17px] font-extrabold transition-transform group-hover:scale-105 sm:text-[19px] ${category.color}`}
                                     >
                                         {category.count}
                                     </span>
 
-                                    <span className="text-[9px] font-medium text-[#18315c]">
+                                    <span className="mt-0.5 text-[7px] font-bold tracking-[0.5px] text-[#36566b] sm:text-[8px]">
                                         {category.label}
                                     </span>
+
+                                    {active && (
+                                        <span className="mt-1 h-0.5 w-5 rounded-full bg-[#f58220]" />
+                                    )}
+
                                 </button>
                             );
                         })}
+
                     </div>
 
                     {/* TABLE */}
@@ -590,160 +369,309 @@ export default function RequirementsWorkspace({
                         activeTab={activeTab}
                         onAdd={handleAdd}
                     />
+
                 </section>
 
-                {/* RIGHT */}
-                <section className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-                    {/* HEADER */}
-                    <div className="flex h-10 shrink-0 items-center border-b-2 border-[#26345d] bg-[#eef8ff] px-3">
-                        <div className="flex items-center gap-2">
-                            <span className="h-2 w-2 rounded-full bg-[#2563eb]" />
+                <section
+                    className="relative flex min-h-[500px] min-w-0 flex-col overflow-hidden rounded-[8px] border border-[#c7dce8] bg-white shadow-[0_8px_28px_rgba(0,59,99,0.09)] lg:min-h-0"
+                >
+                    {/* TOP ACCENT */}
 
-                            <h2 className="text-[16px] font-bold text-[#10234a]">
-                                VGP REQUIREMENTS
-                            </h2>
+                    <div className="flex h-[4px] shrink-0">
+                        <div className="flex-1 bg-[#075a91]" />
+                        <div className="w-16 bg-[#f58220]" />
+                    </div>
+
+
+                    {/* HEADER */}
+
+                    <div className="flex min-h-[58px] shrink-0 items-center gap-2 border-b border-[#d7e5ed] bg-gradient-to-r from-[#f3faff] to-white px-3 py-2.5 sm:px-4">
+
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[5px] bg-[#003b63] text-white shadow-sm">
+                            <span className="text-[10px] font-extrabold">
+                                V
+                            </span>
                         </div>
 
-                        <span className="ml-auto text-[15px] font-bold text-[#10234a]">
-                            {selectedWorks.length} WORKS
-                        </span>
+                        <div className="min-w-0">
+
+                            <h2 className="truncate text-[12px] font-extrabold tracking-[0.6px] text-[#003b63] sm:text-[14px]">
+                                VGP REQUIREMENTS
+                            </h2>
+
+                            <p className="hidden text-[7px] text-slate-400 sm:block">
+                                Selected works for proposal preparation
+                            </p>
+
+                        </div>
+
+
+                        <div className="ml-auto flex items-center gap-1.5">
+
+                            <span className="hidden text-[7px] font-semibold uppercase text-slate-400 sm:block">
+                                Selected
+                            </span>
+
+                            <span className="rounded-[4px] bg-[#075a91] px-2 py-1 text-[9px] font-extrabold text-white shadow-sm">
+                                {selectedWorks.length}
+                            </span>
+
+                            <span className="hidden text-[8px] font-bold text-[#475569] sm:block">
+                                WORKS
+                            </span>
+
+                        </div>
+
                     </div>
+
 
                     {/* INFO */}
-                    <div className="mx-3 mt-2 shrink-0 rounded border border-dashed border-slate-300 bg-white py-2 text-center text-[10px] text-[#18315c]">
-                        ⇄ &nbsp; Works are gathered here from the 318
-                        Permissible Works & E-Jal Recommendation catalogues on
-                        the left panel
+
+                    <div className="mx-3 mt-3 shrink-0 rounded-[6px] border border-dashed border-[#bcd5e2] bg-[#f5fafc] px-3 py-2.5 text-center">
+
+                        <div className="text-[9px] font-semibold text-[#36566b] sm:text-[10px]">
+                            Works selected from the catalogue
+                        </div>
+
+                        <div className="mt-0.5 text-[7px] text-slate-400 sm:text-[8px]">
+                            E-Jal recommendations & permissible works
+                        </div>
+
                     </div>
 
+
                     {/* CATEGORY COUNTS */}
-                    <div className="mt-2 grid h-14 shrink-0 grid-cols-4 border-b border-slate-200">
+
+                    <div className="mx-3 mt-3 grid h-16 shrink-0 grid-cols-4 overflow-hidden rounded-[6px] border border-[#dce7ed]">
+
                         {categories.map((category) => {
-                            const count = selectedWorks.filter(
-                                (work) => work.theme === category.key
-                            ).length;
+
+                            const count =
+                                selectedWorks.filter(
+                                    (work) =>
+                                        work.theme === category.key
+                                ).length;
 
                             return (
                                 <div
                                     key={category.key}
-                                    className="flex flex-col items-center justify-center border-r border-slate-200"
+                                    className="flex flex-col items-center justify-center border-r border-[#e2ebf0] bg-white last:border-r-0"
                                 >
                                     <span
-                                        className={`text-[18px] font-bold ${category.color}`}
+                                        className={`text-[17px] font-extrabold sm:text-[19px] ${category.color}`}
                                     >
                                         {count}
                                     </span>
 
-                                    <span className="text-[9px] font-medium text-[#18315c]">
+                                    <span className="text-[7px] font-bold tracking-[0.4px] text-[#36566b] sm:text-[8px]">
                                         {category.label}
                                     </span>
+
                                 </div>
                             );
                         })}
+
                     </div>
 
+
                     {/* SELECTED TABLE */}
-                    <div className="min-h-0 flex-1 overflow-auto">
-                        <table className="w-full table-fixed border-collapse text-[11px]">
-                            <thead className="sticky top-0 z-10 bg-[#111d43] text-white">
-                                <tr className="h-7">
-                                    <th className="w-[5%] px-2 text-center">◉</th>
-                                    <th className="w-[6%] px-2 text-left">#</th>
-                                    <th className="w-[30%] px-2 text-left">
+
+                    <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
+
+                        <table className="w-full min-w-[680px] table-fixed border-collapse text-[10px] sm:text-[11px]">
+
+                            <thead className="sticky top-0 z-20 bg-[#003b63] text-white shadow-sm">
+
+                                <tr className="h-9 text-[8px] uppercase tracking-[0.5px] sm:text-[9px]">
+
+                                    <th className="w-[7%] px-2 text-center">
+                                        REMOVE
+                                    </th>
+
+                                    <th className="w-[6%] px-2 text-left">
+                                        #
+                                    </th>
+
+                                    <th className="w-[29%] px-2 text-left">
                                         WORK NAME
                                     </th>
+
                                     <th className="w-[20%] px-2 text-left">
                                         SUB THEME
                                     </th>
+
                                     <th className="w-[17%] px-2 text-left">
                                         THEME
                                     </th>
+
                                     <th className="w-[10%] px-2 text-left">
                                         TYPE
                                     </th>
-                                    <th className="w-[12%] px-2 text-center">
+
+                                    <th className="w-[11%] px-2 text-center">
                                         COUNT
                                     </th>
+
                                 </tr>
+
                             </thead>
 
+
                             <tbody>
-                                {selectedWorks.map((work, index) => (
-                                    <tr
-                                        key={work.id}
-                                        className="h-7 border-b border-slate-200"
-                                    >
-                                        <td className="px-2 text-center">
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemove(work.id)}
-                                                className="mx-auto flex h-5 w-5 items-center justify-center rounded-full border border-red-500 text-[13px] leading-none text-red-500 hover:bg-red-50"
+
+                                {selectedWorks.map(
+                                    (work, index) => {
+
+                                        const themeClass =
+                                            work.theme ===
+                                                "Rural Infrastructure"
+                                                ? "text-[#7c3aed]"
+                                                : work.theme ===
+                                                    "Livelihood Infrastructure"
+                                                    ? "text-[#00875a]"
+                                                    : work.theme ===
+                                                        "Climate Resilience"
+                                                        ? "text-[#0879b1]"
+                                                        : "text-[#d97706]";
+
+
+                                        return (
+                                            <tr
+                                                key={work.id}
+                                                className="group h-10 border-b border-[#e4edf2] transition hover:bg-[#fff8f4] sm:h-11"
                                             >
-                                                −
-                                            </button>
-                                        </td>
 
-                                        <td className="px-2">
-                                            {index + 1}
-                                        </td>
+                                                {/* REMOVE */}
 
-                                        <td className="truncate px-2">
-                                            {work.workName}
-                                        </td>
+                                                <td className="px-2 text-center">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleRemove(work.id)}
+                                                        title="Remove work"
+                                                        className="mx-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#fecaca] bg-[#fff5f5] text-[13px] font-bold text-[#dc2626] transition hover:bg-[#dc2626] hover:text-white active:scale-90"
+                                                    >
+                                                        −
+                                                    </button>
 
-                                        <td className="truncate px-2">
-                                            {work.subTheme}
-                                        </td>
+                                                </td>
 
-                                        <td
-                                            className={`truncate px-2 font-medium ${work.theme === "Rural Infrastructure"
-                                                ? "text-purple-700"
-                                                : work.theme === "Livelihood Infrastructure"
-                                                    ? "text-emerald-700"
-                                                    : work.theme === "Climate Resilience"
-                                                        ? "text-sky-700"
-                                                        : "text-orange-600"
-                                                }`}
-                                        >
-                                            {work.theme}
-                                        </td>
 
-                                        <td
-                                            className={
-                                                work.type === "Repair"
-                                                    ? "text-red-600"
-                                                    : "text-emerald-700"
-                                            }
-                                        >
-                                            {work.type}
-                                        </td>
+                                                {/* INDEX */}
 
-                                        <td className="px-2 text-center">
-                                            {work.count}
-                                        </td>
-                                    </tr>
-                                ))}
+                                                <td className="px-2 font-mono text-[8px] text-slate-400">
+                                                    {String(index + 1).padStart(2, "0")}
+                                                </td>
+
+
+                                                {/* WORK */}
+
+                                                <td
+                                                    className="truncate px-2 font-semibold text-[#263f52]"
+                                                    title={work.workName}
+                                                >
+                                                    {work.workName}
+                                                </td>
+
+
+                                                {/* SUB THEME */}
+
+                                                <td
+                                                    className="truncate px-2 text-slate-500"
+                                                    title={work.subTheme}
+                                                >
+                                                    {work.subTheme}
+                                                </td>
+
+
+                                                {/* THEME */}
+
+                                                <td
+                                                    className={`truncate px-2 font-semibold ${themeClass}`}
+                                                    title={work.theme}
+                                                >
+                                                    {work.theme}
+                                                </td>
+
+
+                                                {/* TYPE */}
+
+                                                <td className="px-2">
+
+                                                    <span
+                                                        className={`inline-flex rounded-full border px-2 py-1 text-[7px] font-bold ${work.type === "Repair"
+                                                            ? "border-[#fecaca] bg-[#fff5f5] text-[#dc2626]"
+                                                            : "border-[#bce6d5] bg-[#effbf5] text-[#00875a]"
+                                                            }`}
+                                                    >
+                                                        {work.type}
+                                                    </span>
+
+                                                </td>
+
+
+                                                {/* COUNT */}
+
+                                                <td className="px-2 text-center">
+
+                                                    <span className="inline-flex min-w-8 items-center justify-center rounded-[4px] bg-[#edf7fc] px-2 py-1 text-[8px] font-extrabold text-[#075a91]">
+                                                        {work.count}
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+                                        );
+                                    }
+                                )}
+
                             </tbody>
+
                         </table>
 
+
+                        {/* EMPTY */}
+
                         {selectedWorks.length === 0 && (
-                            <div className="flex h-full items-center justify-center text-[11px] text-slate-400">
-                                No works selected
+                            <div className="flex min-h-[250px] flex-col items-center justify-center px-5 text-center">
+
+                                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-[#cfe2ec] bg-[#eef7fb] text-[#075a91]">
+                                    <span className="text-[17px] font-bold">
+                                        +
+                                    </span>
+                                </div>
+
+                                <p className="text-[11px] font-bold text-[#475569]">
+                                    No works selected
+                                </p>
+
+                                <p className="mt-1 max-w-[260px] text-[8px] leading-relaxed text-slate-400">
+                                    Select works from the catalogue on the
+                                    left panel to build your VGP requirements.
+                                </p>
+
                             </div>
                         )}
+
                     </div>
+
                 </section>
+
             </div>
 
-            {/* NEXT BUTTON - PAGE LEVEL */}
-            <div className="absolute bottom-0 right-0">
+            <div className="fixed bottom-3 right-3 z-40 sm:absolute sm:bottom-0 sm:right-0">
+
                 <button
                     type="button"
-                    className="rounded-md border border-[#46537d] bg-white px-5 py-1 text-[11px] font-semibold text-[#18315c] shadow-sm transition hover:bg-slate-50"
+                    className="flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-[5px] bg-[#075a91] px-5 text-[9px] font-bold text-white shadow-[0_5px_14px_rgba(0,59,99,0.22)] transition hover:bg-[#003b63] hover:shadow-[0_7px_18px_rgba(0,59,99,0.28)] active:scale-[0.97] sm:min-h-8 sm:px-6"
                 >
-                    Next →
+                    Next
+                    <span className="text-[12px]">
+                        →
+                    </span>
                 </button>
+
             </div>
+
         </div>
     );
 }

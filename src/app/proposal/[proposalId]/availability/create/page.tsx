@@ -13,15 +13,12 @@ import {
 } from "@/types/work";
 
 const AvailabilityMap = dynamic(
-  () =>
-    import("@/components/availability/AvailabilityMap"),
+  () => import("@/components/availability/AvailabilityMap"),
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full w-full items-center justify-center bg-[#f5f1e9]">
-        <span className="text-sm text-slate-500">
-          Loading map...
-        </span>
+      <div className="flex h-full min-h-[360px] w-full items-center justify-center rounded-[6px] bg-[#edf4f8] text-[10px] text-slate-500 sm:min-h-[420px]">
+        Loading map...
       </div>
     ),
   }
@@ -115,10 +112,42 @@ export default function CreateAssetPage() {
   };
 
   return (
-    <main className="h-screen overflow-hidden bg-[#f4f7fa] p-4">
-      <div className="grid h-full min-h-0 grid-cols-[395px_minmax(0,1fr)] gap-4">
-        {/* ================= LEFT FORM ================= */}
-        <section className="min-h-0 overflow-hidden rounded-xl border border-[#dce4eb] bg-white shadow-sm">
+    <main className="min-h-screen w-full bg-[#eef5f8] p-2 sm:p-3 lg:p-4">
+
+      <div
+        className="
+          grid
+          min-h-[calc(100vh-16px)]
+          grid-cols-1
+          gap-3
+          sm:min-h-[calc(100vh-24px)]
+          sm:gap-4
+          lg:min-h-[calc(100vh-32px)]
+          lg:gap-4
+          xl:h-[calc(100vh-32px)]
+          xl:grid-cols-[395px_minmax(0,1fr)]
+        "
+      >
+
+        {/* =====================================================
+            LEFT - FORM
+        ====================================================== */}
+
+        <section
+          className="
+            flex
+            min-h-[620px]
+            min-w-0
+            flex-col
+            overflow-hidden
+            rounded-[6px]
+            border
+            border-[#cbdde8]
+            bg-white
+            shadow-[0_4px_16px_rgba(0,59,99,0.08)]
+            xl:min-h-0
+          "
+        >
           <CreateAssetForm
             works={works}
             selectedWorkId={selectedWorkId}
@@ -137,26 +166,78 @@ export default function CreateAssetPage() {
           />
         </section>
 
-        {/* ================= RIGHT MAP ================= */}
-        <section className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-[#dce4eb] bg-white shadow-sm">
+
+        {/* =====================================================
+            RIGHT - MAP
+        ====================================================== */}
+
+        <section
+          className="
+            flex
+            min-h-[420px]
+            min-w-0
+            flex-col
+            overflow-hidden
+            rounded-[6px]
+            border
+            border-[#cbdde8]
+            bg-white
+            shadow-[0_4px_16px_rgba(0,59,99,0.08)]
+            sm:min-h-[500px]
+            xl:min-h-0
+          "
+        >
+
           {/* MAP HEADER */}
-          <div className="flex h-9 shrink-0 items-center border-b border-[#d4e2eb] bg-[#eaf6fd] px-3">
-            <h2 className="text-[12px] font-semibold text-[#08669c]">
-              Click on the map to pin the work location
-            </h2>
+
+          <div className="shrink-0 border-b border-[#cbdde8] bg-white">
+
+            <div className="flex h-[3px]">
+
+              <div className="flex-1 bg-[#075a91]" />
+
+              <div className="w-[70px] bg-[#f58220]" />
+
+            </div>
+
+            <div className="flex min-h-[45px] items-center px-3 sm:px-4">
+
+              <div className="flex items-center gap-2">
+
+                <span className="h-2 w-2 rounded-full bg-[#075a91]" />
+
+                <h2 className="text-[10px] font-bold uppercase tracking-[0.7px] text-[#003b63] sm:text-[11px]">
+                  Asset Location
+                </h2>
+
+              </div>
+
+              <span className="ml-auto text-[8px] font-medium text-slate-400 sm:text-[9px]">
+                Click on map to pin location
+              </span>
+
+            </div>
+
           </div>
 
+
           {/* MAP */}
+
           <div className="relative min-h-0 flex-1">
+
             <AvailabilityMap
               works={works}
               mode="pin"
               selectedPosition={selectedPosition}
               onMapClick={handleMapClick}
             />
+
           </div>
+
         </section>
+
       </div>
+
     </main>
   );
 }
