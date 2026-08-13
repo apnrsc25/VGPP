@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { CURRENT_USER_ROLE } from "@/config/userConfig";
 
 const ASHOKA_IMG =
   "https://bhuvan-app2.nrsc.gov.in/planner_v3/img/Ashoka.png";
@@ -31,8 +32,15 @@ export default function VGPPLanding({
     useState<ModalType>(null);
 
   const handleNext = () => {
+    if (CURRENT_USER_ROLE === "Planner") {
+      router.push(
+        `/proposal/${proposalId}/availability`
+      );
+      return;
+    }
+
     router.push(
-      `/proposal/${proposalId}/availability`
+      `/location`
     );
   };
 
