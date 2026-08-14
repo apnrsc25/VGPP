@@ -6,4 +6,4 @@ export type UserRole =
   | "Block Admin";
 
 export const CURRENT_USER_ROLE: UserRole =
-  "Planner";
+  "Block Admin";

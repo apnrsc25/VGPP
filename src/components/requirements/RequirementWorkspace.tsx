@@ -161,7 +161,19 @@ export default function RequirementsWorkspace({
     ]);
 
     const selectedWorks = useMemo(() => {
-        return works
+        const allWorks = [
+            ...works,
+            ...permissibleWorks,
+        ];
+
+        // Duplicate IDs remove karo
+        const uniqueWorks = Array.from(
+            new Map(
+                allWorks.map((work) => [work.id, work])
+            ).values()
+        );
+
+        return uniqueWorks
             .filter((work) => selectedIds.has(work.id))
             .map((work) => ({
                 ...work,
@@ -172,6 +184,7 @@ export default function RequirementsWorkspace({
             }));
     }, [
         works,
+        permissibleWorks,
         selectedIds,
         activeTab,
         ejalCounts,
