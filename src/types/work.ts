@@ -10,7 +10,7 @@ export interface Work {
   id: string;
   vgpId: string;
   workName: string;
-  count?: number;
+  quantity?: number;
   subTheme: string;
   theme: string;
   type: WorkType;

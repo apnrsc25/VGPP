@@ -6,6 +6,7 @@ import {
   Plus,
   SlidersHorizontal,
   Search,
+  Download,
 } from "lucide-react";
 
 import type { Work } from "@/types/work";
@@ -30,6 +31,69 @@ export default function AvailabilityTable({
   onToggleVisibility,
   onCreateAsset,
 }: AvailabilityTableProps) {
+
+
+  const handleDownload = () => {
+    if (works.length === 0) {
+      return;
+    }
+
+    const headers = [
+      "#",
+      "Work Name",
+      "Sub Theme",
+      "Theme",
+      "Count",
+      "Type",
+    ];
+
+    const rows = works.map((work, index) => [
+      index + 1,
+      work.workName,
+      work.subTheme,
+      work.theme,
+      work.quantity ?? "",
+      work.type,
+    ]);
+
+    const csvContent = [
+      headers,
+      ...rows,
+    ]
+      .map((row) =>
+        row
+          .map((value) => {
+            const text = String(value ?? "");
+            return `"${text.replace(/"/g, '""')}"`;
+          })
+          .join(",")
+      )
+      .join("\n");
+
+    const blob = new Blob(
+      [csvContent],
+      { type: "text/csv;charset=utf-8;" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "panchayat-works.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  };
+
+
+
+
+
+
+
   return (
     <section className="flex h-full min-h-0 flex-col overflow-hidden rounded-[6px] border border-[#cbdde8] bg-white shadow-[0_4px_16px_rgba(0,59,99,0.08)]">
 
@@ -70,7 +134,7 @@ export default function AvailabilityTable({
                 PANCHAYAT ASSETS
               </h2>
 
-              <div className="hidden text-[7px] font-medium text-slate-400 sm:block">
+              <div className="hidden text-[9px] font-medium text-slate-400 sm:block">
                 Available works
               </div>
 
@@ -117,6 +181,8 @@ export default function AvailabilityTable({
 
           {/* COUNT */}
 
+          {/* COUNT */}
+
           <div className="ml-auto flex shrink-0 items-center gap-1.5">
 
             <span className="hidden text-[7px] font-semibold uppercase tracking-wide text-slate-400 sm:block">
@@ -130,6 +196,21 @@ export default function AvailabilityTable({
             <span className="hidden text-[8px] font-bold text-[#475569] sm:block">
               WORKS
             </span>
+
+            {/* DOWNLOAD */}
+
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={works.length === 0}
+              title="Download works"
+              className="ml-1 flex h-7 items-center justify-center gap-1.5 rounded-[4px] border border-[#b8cfdd] bg-white px-2.5 text-[9px] font-semibold text-[#075a91] transition hover:border-white hover:bg-[#f58220] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+            >
+              <Download size={13} />
+              <span className="hidden sm:inline">
+                Download
+              </span>
+            </button>
 
           </div>
 
@@ -214,7 +295,7 @@ export default function AvailabilityTable({
                   {/* WORK */}
 
                   <td
-                    className="truncate px-2 font-semibold text-[#334155]"
+                    className="truncate px-2 font-semibold text-[#334155] text-[11px]"
                     title={work.workName}
                   >
                     {work.workName}
@@ -224,7 +305,7 @@ export default function AvailabilityTable({
                   {/* SUB THEME */}
 
                   <td
-                    className="truncate px-2 text-slate-500"
+                    className="truncate px-2 text-slate-500 text-[#334155] text-[10px]"
                     title={work.subTheme}
                   >
                     {work.subTheme}
@@ -234,18 +315,17 @@ export default function AvailabilityTable({
                   {/* THEME */}
 
                   <td
-                    className={`truncate px-2 font-semibold ${
-                      work.theme ===
+                    className={`truncate text-[10px] px-2 font-semibold ${work.theme ===
                       "Rural Infrastructure"
-                        ? "text-[#7c3aed]"
+                      ? "text-[#7c3aed]"
+                      : work.theme ===
+                        "Livelihood Infrastructure"
+                        ? "text-[#00875a]"
                         : work.theme ===
-                            "Livelihood Infrastructure"
-                          ? "text-[#00875a]"
-                          : work.theme ===
-                              "Climate Resilience"
-                            ? "text-[#0879b1]"
-                            : "text-[#d97706]"
-                    }`}
+                          "Climate Resilience"
+                          ? "text-[#0879b1]"
+                          : "text-[#d97706]"
+                      }`}
                   >
                     {work.theme}
                   </td>
@@ -255,8 +335,8 @@ export default function AvailabilityTable({
 
                   <td className="px-2 text-center">
 
-                    <span className="inline-flex min-w-7 items-center justify-center rounded-full border border-[#c9def0] bg-[#edf6fc] px-2 py-1 text-[8px] font-bold text-[#075a91]">
-                      {work.count}
+                    <span className="inline-flex text-[11px] min-w-7 items-center justify-center rounded-md border border-[#c9def0] bg-[#edf6fc] px-2 py-0.5 text-[8px] font-bold text-[#075a91]">
+                      {work.quantity}
                     </span>
 
                   </td>
@@ -267,11 +347,10 @@ export default function AvailabilityTable({
                   <td className="px-2 text-center">
 
                     <span
-                      className={`inline-flex rounded-[3px] px-2 py-1 text-[7px] font-bold ${
-                        work.type === "Repair"
-                          ? "bg-[#fff1f0] text-[#dc2626]"
-                          : "bg-[#edf9f4] text-[#00875a]"
-                      }`}
+                      className={`inline-flex rounded-[3px] px-2 py-1 text-[8px] font-bold ${work.type === "Repair"
+                        ? "bg-[#fff1f0] text-[#dc2626]"
+                        : "bg-[#edf9f4] text-[#00875a]"
+                        }`}
                     >
                       {work.type}
                     </span>
@@ -290,11 +369,10 @@ export default function AvailabilityTable({
                           work.id
                         )
                       }
-                      className={`mx-auto flex h-6 w-6 items-center justify-center rounded-full border transition ${
-                        isVisible
-                          ? "border-[#9fc8df] bg-[#eaf6fd] text-[#075a91]"
-                          : "border-transparent text-slate-300 hover:border-[#cbdde8] hover:bg-slate-50 hover:text-[#075a91]"
-                      }`}
+                      className={`mx-auto flex h-6 w-6 items-center justify-center rounded-full border transition ${isVisible
+                        ? "border-[#9fc8df] bg-[#eaf6fd] text-[#075a91]"
+                        : "border-transparent text-slate-300 hover:border-[#cbdde8] hover:bg-slate-50 hover:text-[#075a91]"
+                        }`}
                       title={
                         isVisible
                           ? "Hide on map"

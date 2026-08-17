@@ -9,8 +9,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 3,
-    latitude: 15.2385,
-    longitude: 75.012,
+    location: {
+      lat: 15.2385,
+      lng: 75.012,
+    },
     visibleOnMap: false,
   },
   {
@@ -21,8 +23,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 2,
-    latitude: 15.245,
-    longitude: 75.018,
+    location: {
+      lat: 15.245,
+      lng: 75.018,
+    },
     visibleOnMap: false,
   },
   {
@@ -33,8 +37,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 4,
-    latitude: 15.252,
-    longitude: 75.006,
+    location: {
+      lat: 15.252,
+      lng: 75.006,
+    },
     visibleOnMap: false,
   },
   {
@@ -45,8 +51,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 3,
-    latitude: 15.261,
-    longitude: 75.02,
+    location: {
+      lat: 15.261,
+      lng: 75.02,
+    },
     visibleOnMap: false,
   },
   {
@@ -57,8 +65,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 2,
-    latitude: 15.268,
-    longitude: 75.011,
+    location: {
+      lat: 15.268,
+      lng: 75.011,
+    },
     visibleOnMap: false,
   },
   {
@@ -69,8 +79,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 3,
-    latitude: 15.276,
-    longitude: 75.024,
+    location: {
+      lat: 15.276,
+      lng: 75.024,
+    },
     visibleOnMap: false,
   },
   {
@@ -81,8 +93,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 1,
-    latitude: 15.284,
-    longitude: 75.016,
+    location: {
+      lat: 15.284,
+      lng: 75.016,
+    },
     visibleOnMap: false,
   },
   {
@@ -93,8 +107,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 2,
-    latitude: 15.292,
-    longitude: 75.029,
+    location: {
+      lat: 15.292,
+      lng: 75.029,
+    },
     visibleOnMap: false,
   },
   {
@@ -105,8 +121,10 @@ export const mockAssets: Work[] = [
     theme: "Rural Infrastructure",
     type: "New",
     quantity: 1,
-    latitude: 15.301,
-    longitude: 75.014,
+    location: {
+      lat: 15.301,
+      lng: 75.014,
+    },
     visibleOnMap: false,
   },
   {
@@ -117,8 +135,10 @@ export const mockAssets: Work[] = [
     theme: "Water Security",
     type: "New",
     quantity: 2,
-    latitude: 15.309,
-    longitude: 75.022,
+    location: {
+      lat: 15.309,
+      lng: 75.022,
+    },
     visibleOnMap: false,
   },
 ];

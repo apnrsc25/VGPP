@@ -9,6 +9,8 @@ import {
   Languages,
   BriefcaseBusiness,
   Activity,
+  Ruler,
+  Hash,
 } from "lucide-react";
 
 import { Functionality, Work } from "@/types/work";
@@ -18,15 +20,30 @@ interface CreateAssetFormProps {
   selectedWorkId: string;
   localWorkName: string;
   functionality: Functionality;
+  scheme: string;
+  financialYear: string;
+
   selectedPosition: {
     latitude: number;
     longitude: number;
   } | null;
+
+  unit: number;
+  onUnitChange: (value: number) => void;
+
+  unitType: "Nits" | "cm" | "m" | "km";
+  onUnitTypeChange: (
+    value: "Nits" | "cm" | "m" | "km"
+  ) => void;
+
   onWorkChange: (workId: string) => void;
   onLocalWorkNameChange: (value: string) => void;
   onFunctionalityChange: (
     value: Functionality
   ) => void;
+  onSchemeChange: (value: string) => void;
+  onFinancialYearChange: (value: string) => void;
+
   onSave: () => void;
   onCancel: () => void;
 }
@@ -36,10 +53,18 @@ export default function CreateAssetForm({
   selectedWorkId,
   localWorkName,
   functionality,
+  scheme,
+  financialYear,
   selectedPosition,
+  unit,
+  unitType,
+  onUnitChange,
+  onUnitTypeChange,
   onWorkChange,
   onLocalWorkNameChange,
   onFunctionalityChange,
+  onSchemeChange,
+  onFinancialYearChange,
   onSave,
   onCancel,
 }: CreateAssetFormProps) {
@@ -79,9 +104,9 @@ export default function CreateAssetForm({
 
         <div className="h-[4px] bg-gradient-to-r from-[#075a91] via-[#0c78ad] to-[#f58220]" />
 
-        <div className="px-4 py-4 sm:px-5">
+        <div className="px-4 py-3 sm:px-5">
 
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-2">
 
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[4px] bg-[#075a91] text-white shadow-sm">
               <BriefcaseBusiness size={17} />
@@ -93,7 +118,7 @@ export default function CreateAssetForm({
                 Add Available Asset
               </h2>
 
-              <p className="mt-1 text-[9px] leading-relaxed text-slate-500 sm:text-[10px]">
+              <p className="mt-1 text-[10px] leading-relaxed text-slate-500 sm:text-[12px]">
                 Add a permissible work to the availability list
                 and pin its location on the map.
               </p>
@@ -111,13 +136,13 @@ export default function CreateAssetForm({
           FORM
       ====================================================== */}
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-5 sm:py-5">
+      <div className="min-h-0 flex-1 overflow-y-auto px-3 py-3 sm:px-4 sm:py-4">
 
-        <div className="space-y-4">
+        <div className="space-y-2">
 
           {/* LANGUAGE */}
 
-          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-3 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-4">
+          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
 
             <div className="mb-2 flex items-center gap-2">
 
@@ -130,7 +155,7 @@ export default function CreateAssetForm({
                 Input Language
               </label>
 
-              <span className="text-[8px] text-slate-400">
+              <span className="text-[9px] text-slate-400">
                 Manual typing
               </span>
 
@@ -158,7 +183,7 @@ export default function CreateAssetForm({
 
           {/* WORK */}
 
-          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-3 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-4">
+          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
 
             <div className="mb-2 flex items-center gap-2">
 
@@ -177,7 +202,7 @@ export default function CreateAssetForm({
 
             </div>
 
-            <p className="mb-2 text-[8px] text-slate-400">
+            <p className="mb-2 text-[9px] text-slate-400">
               Select from permissible works
             </p>
 
@@ -241,7 +266,7 @@ export default function CreateAssetForm({
             </div>
 
             {selectedWork && (
-              <div className="mt-2 flex items-center gap-2 rounded-[3px] bg-[#edf7fb] px-2.5 py-2 text-[9px] text-[#075a91]">
+              <div className="mt-2 flex items-center gap-2 rounded-[3px] bg-[#edf7fb] px-2.5 py-1.5 text-[9px] text-[#075a91]">
 
                 <CheckCircle2 size={12} />
 
@@ -254,10 +279,188 @@ export default function CreateAssetForm({
 
           </div>
 
+          {/* SCHEME */}
+
+          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
+
+            <div className="mb-2 flex items-center gap-2">
+
+              <BriefcaseBusiness
+                size={14}
+                className="text-[#075a91]"
+              />
+
+              <label className="text-[9px] font-bold uppercase tracking-[0.8px] text-[#475569]">
+                Scheme
+              </label>
+
+            </div>
+
+            <input
+              type="text"
+              value={scheme}
+              onChange={(event) =>
+                onSchemeChange(event.target.value)
+              }
+              placeholder="Enter scheme name"
+              className="h-9 w-full rounded-[4px] border border-[#cbd8e1] px-3 text-[11px] text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-[#075a91] focus:ring-2 focus:ring-[#075a91]/10"
+            />
+
+          </div>
+
+          {/* UNIT */}
+
+          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
+
+            <div className="mb-3 flex items-center justify-between gap-3">
+
+              <div className="flex items-center gap-2">
+
+                <Activity
+                  size={14}
+                  className="text-[#075a91]"
+                />
+
+                <label className="text-[9px] font-bold uppercase tracking-[0.8px] text-[#475569]">
+                  Unit
+                </label>
+
+                <span className="text-[9px] font-bold text-[#f58220]">
+                  *
+                </span>
+
+              </div>
+
+              {/* VALUE + UNIT */}
+
+              <div className="flex items-center gap-1.5">
+
+                {/* VALUE */}
+
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={unit}
+                  onChange={(event) => {
+                    const rawValue = event.target.value;
+
+                    if (rawValue === "") {
+                      onUnitChange(0);
+                      return;
+                    }
+
+                    const value = Number(rawValue);
+
+                    onUnitChange(
+                      Math.min(100, Math.max(0, value))
+                    );
+                  }}
+                  className="h-8 w-16 rounded-[4px] border border-[#cbd8e1] bg-white px-2 text-center text-[11px] font-bold text-[#075a91] outline-none transition focus:border-[#075a91] focus:ring-2 focus:ring-[#075a91]/10"
+                />
+
+                {/* UNIT DROPDOWN */}
+
+                <div className="relative">
+
+                  <select
+                    value={unitType}
+                    onChange={(event) =>
+                      onUnitTypeChange(
+                        event.target.value as
+                        | "Nits"
+                        | "cm"
+                        | "m"
+                        | "km"
+                      )
+                    }
+                    className="h-8 w-[70px] appearance-none rounded-[4px] border border-[#cbd8e1] bg-white px-2 pr-6 text-[10px] font-semibold text-[#475569] outline-none transition focus:border-[#075a91] focus:ring-2 focus:ring-[#075a91]/10"
+                  >
+                    <option value="Nits">Nits</option>
+                    <option value="cm">cm</option>
+                    <option value="m">m</option>
+                    <option value="km">km</option>
+                  </select>
+
+                  <ChevronDown
+                    size={12}
+                    className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400"
+                  />
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* SLIDER */}
+
+            <div className="px-1">
+
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                value={unit}
+                onChange={(event) =>
+                  onUnitChange(Number(event.target.value))
+                }
+                className="h-1.5 w-full cursor-pointer accent-[#075a91]"
+              />
+
+              {/* SCALE */}
+
+              <div className="mt-2 flex items-center justify-between text-[8px] font-medium text-slate-400">
+                <span>0</span>
+                <span>25</span>
+                <span>50</span>
+                <span>75</span>
+                <span>100</span>
+              </div>
+
+            </div>
+
+            <p className="mt-2 text-[9px] text-slate-400">
+              Enter the value and select the appropriate unit.
+            </p>
+
+          </div>
+
+
+          {/* FINANCIAL YEAR */}
+
+          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
+
+            <div className="mb-2 flex items-center gap-2">
+
+              <BriefcaseBusiness
+                size={14}
+                className="text-[#075a91]"
+              />
+
+              <label className="text-[9px] font-bold uppercase tracking-[0.8px] text-[#475569]">
+                Financial Year
+              </label>
+
+            </div>
+
+            <input
+              type="text"
+              value={financialYear}
+              onChange={(event) =>
+                onFinancialYearChange(event.target.value)
+              }
+              placeholder="Enter financial year (e.g. 2026-27)"
+              className="h-9 w-full rounded-[4px] border border-[#cbd8e1] px-3 text-[11px] text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-[#075a91] focus:ring-2 focus:ring-[#075a91]/10"
+            />
+
+          </div>
+
 
           {/* LOCAL WORK */}
 
-          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-3 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-4">
+          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
 
             <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.8px] text-[#475569]">
               Local Work
@@ -282,7 +485,7 @@ export default function CreateAssetForm({
 
           {/* FUNCTIONALITY */}
 
-          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-3 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-4">
+          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
 
             <div className="mb-3 flex items-center gap-2">
 
@@ -440,63 +643,14 @@ export default function CreateAssetForm({
 
           {/* CANCEL */}
 
-          <button
-            type="button"
-            onClick={onCancel}
-            className="
-        flex
-        min-h-10
-        w-full
-        cursor-pointer
-        items-center
-        justify-center
-        rounded-[4px]
-        border
-        border-[#cbd8e1]
-        bg-white
-        px-3
-        text-[10px]
-        font-bold
-        text-slate-600
-        transition
-        hover:bg-slate-50
-        active:scale-[0.98]
-      "
-          >
+          <button type="button" onClick={onCancel} className="flex min-h-10 w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#cbd8e1] bg-white px-3 text-[10px] font-bold text-slate-600 transition hover:bg-slate-50 active:scale-[0.98]">
             Cancel
           </button>
 
 
           {/* SAVE */}
 
-          <button
-            type="button"
-            disabled={
-              !selectedWorkId ||
-              !selectedPosition
-            }
-            onClick={onSave}
-            className="
-        flex
-        min-h-10
-        w-full
-        cursor-pointer
-        items-center
-        justify-center
-        rounded-[4px]
-        bg-[#075a91]
-        px-3
-        text-[10px]
-        font-bold
-        text-white
-        shadow-sm
-        transition
-        hover:bg-[#003b63]
-        active:scale-[0.98]
-        disabled:cursor-not-allowed
-        disabled:opacity-45
-      "
-          >
+          <button type="button" disabled={!selectedWorkId || !selectedPosition} onClick={onSave} className="flex min-h-10 w-full cursor-pointer items-center justify-center rounded-[4px] bg-[#075a91] px-3 text-[10px] font-bold text-white shadow-sm transition hover:bg-[#003b63] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45">
             Save Work
           </button>
 
