@@ -830,9 +830,9 @@ export default function LocationSelectionWorkspace({
     setSelectedBlock(null);
     setSelectedPanchayat(null);
 
-    setModalLevel(null);
+    // setModalLevel(null);
 
-    // setModalLevel("district");
+    setModalLevel("district");
   };
 
   /*
@@ -864,8 +864,8 @@ export default function LocationSelectionWorkspace({
     setSelectedBlock(null);
     setSelectedPanchayat(null);
 
-    setModalLevel(null);
-    // setModalLevel("block");
+    // setModalLevel(null);
+    setModalLevel("block");
   };
 
   /*
@@ -896,8 +896,8 @@ export default function LocationSelectionWorkspace({
     // Reset lower hierarchy
     setSelectedPanchayat(null);
 
-    setModalLevel(null);
-    // setModalLevel("panchayat");
+    // setModalLevel(null);
+    setModalLevel("panchayat");
   };
 
   /*
@@ -1092,7 +1092,7 @@ export default function LocationSelectionWorkspace({
 
                 {/* FINANCIAL YEAR */}
 
-                <div className="mt-3 rounded-lg border border-[#dce8ef] bg-[#f9fbfc] p-3">
+                {/* <div className="mt-3 rounded-lg border border-[#dce8ef] bg-[#f9fbfc] p-3">
 
                   <div className="mb-1.5 flex items-center gap-1.5">
 
@@ -1119,7 +1119,7 @@ export default function LocationSelectionWorkspace({
 
                   </div>
 
-                </div>
+                </div> */}
 
                 {/* SELECTED LOCATION */}
 

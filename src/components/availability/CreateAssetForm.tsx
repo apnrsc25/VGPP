@@ -310,7 +310,7 @@ export default function CreateAssetForm({
 
           {/* UNIT */}
 
-          <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
+          {/* <div className="rounded-[5px] border border-[#d8e5ec] bg-white p-2 shadow-[0_2px_8px_rgba(0,59,99,0.04)] sm:p-3">
 
             <div className="mb-3 flex items-center justify-between gap-3">
 
@@ -331,11 +331,11 @@ export default function CreateAssetForm({
 
               </div>
 
-              {/* VALUE + UNIT */}
+  
 
               <div className="flex items-center gap-1.5">
 
-                {/* VALUE */}
+         
 
                 <input
                   type="number"
@@ -359,7 +359,7 @@ export default function CreateAssetForm({
                   className="h-8 w-16 rounded-[4px] border border-[#cbd8e1] bg-white px-2 text-center text-[11px] font-bold text-[#075a91] outline-none transition focus:border-[#075a91] focus:ring-2 focus:ring-[#075a91]/10"
                 />
 
-                {/* UNIT DROPDOWN */}
+          
 
                 <div className="relative">
 
@@ -393,7 +393,6 @@ export default function CreateAssetForm({
 
             </div>
 
-            {/* SLIDER */}
 
             <div className="px-1">
 
@@ -409,8 +408,6 @@ export default function CreateAssetForm({
                 className="h-1.5 w-full cursor-pointer accent-[#075a91]"
               />
 
-              {/* SCALE */}
-
               <div className="mt-2 flex items-center justify-between text-[8px] font-medium text-slate-400">
                 <span>0</span>
                 <span>25</span>
@@ -425,7 +422,7 @@ export default function CreateAssetForm({
               Enter the value and select the appropriate unit.
             </p>
 
-          </div>
+          </div> */}
 
 
           {/* FINANCIAL YEAR */}

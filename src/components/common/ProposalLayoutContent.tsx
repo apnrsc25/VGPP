@@ -18,6 +18,11 @@ export default function ProposalLayoutContent({
   );
 
   const getCurrentStep = () => {
+
+    if (pathname.includes("/approval")) {
+      return 5;
+    }
+
     if (pathname.includes("/requirements")) {
       return 2;
     }

@@ -43,7 +43,7 @@ const steps = [
   {
     label: "APPROVAL",
     shortLabel: "Approval",
-    path: null,
+    path: "approval",
     icon: ShieldCheck,
   },
 ];
