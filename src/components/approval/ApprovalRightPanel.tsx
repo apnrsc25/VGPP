@@ -10,6 +10,7 @@ import {
     MapPinned,
 } from "lucide-react";
 
+
 interface SelectedWork {
     id: string;
     workName: string;
@@ -28,6 +29,7 @@ export default function ApprovalRightPanel({
     selectedWorks,
     proposalId,
 }: ApprovalRightPanelProps) {
+
     const geotaggedCount = selectedWorks.filter(
         (work) => work.geotagged
     ).length;
@@ -40,6 +42,130 @@ export default function ApprovalRightPanel({
     const allGeotagged =
         selectedWorks.length > 0 &&
         geotaggedCount === selectedWorks.length;
+
+    const handlePrintCertificate = () => {
+        const certificate = document.getElementById(
+            "gp-resolution-certificate"
+        );
+
+        if (!certificate) {
+            console.error("Certificate element not found.");
+            return;
+        }
+
+        const iframe = document.createElement("iframe");
+
+        iframe.style.position = "fixed";
+        iframe.style.right = "0";
+        iframe.style.bottom = "0";
+        iframe.style.width = "0";
+        iframe.style.height = "0";
+        iframe.style.border = "0";
+        iframe.style.opacity = "0";
+
+        document.body.appendChild(iframe);
+
+        const printDocument = iframe.contentDocument;
+
+        if (!printDocument) {
+            document.body.removeChild(iframe);
+            return;
+        }
+
+        const styles = Array.from(
+            document.querySelectorAll(
+                'link[rel="stylesheet"], style'
+            )
+        )
+            .map((element) => element.outerHTML)
+            .join("\n");
+
+        printDocument.open();
+
+        printDocument.write(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>GP Resolution Certificate</title>
+
+        ${styles}
+
+        <style>
+          @page {
+            size: A4 landscape;
+            margin: 8mm;
+          }
+
+          html,
+          body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            background: #ffffff !important;
+          }
+
+          body {
+            overflow: visible !important;
+          }
+
+          #gp-resolution-certificate {
+            display: block !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+
+            border-radius: 0 !important;
+            box-shadow: none !important;
+
+            background: #fffdf7 !important;
+
+            visibility: visible !important;
+
+            print-color-adjust: exact !important;
+            -webkit-print-color-adjust: exact !important;
+          }
+
+          #gp-resolution-certificate * {
+            visibility: visible !important;
+            print-color-adjust: exact !important;
+            -webkit-print-color-adjust: exact !important;
+          }
+        </style>
+      </head>
+
+      <body>
+        ${certificate.outerHTML}
+      </body>
+    </html>
+  `);
+
+        printDocument.close();
+
+        const printWindow = iframe.contentWindow;
+
+        if (!printWindow) {
+            document.body.removeChild(iframe);
+            return;
+        }
+
+        const cleanup = () => {
+            setTimeout(() => {
+                if (iframe.parentNode) {
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }, 500);
+        };
+
+        iframe.onload = () => {
+            setTimeout(() => {
+                printWindow.focus();
+                printWindow.print();
+
+                cleanup();
+            }, 300);
+        };
+    };
 
     return (
         <section className="flex min-h-[560px] min-w-0 flex-col overflow-hidden rounded-[10px] border border-[#d5e2ea] bg-white shadow-[0_4px_18px_rgba(0,59,99,0.08)] xl:min-h-0">
@@ -129,10 +255,15 @@ export default function ApprovalRightPanel({
 
                         <button
                             type="button"
-                            className="flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-[5px] border border-[#b9d7ed] bg-white px-2.5 text-[7px] font-extrabold text-[#075a91] shadow-sm transition hover:border-[#075a91] hover:bg-[#eef7fb] active:scale-[0.98]"
+                            onClick={handlePrintCertificate}
+                            className="group flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-[6px] border border-[#b9d7ed] bg-white px-2.5 text-[7px] font-extrabold text-[#075a91] shadow-sm transition-all duration-200 hover:border-[#075a91] hover:bg-[#eef7fb] hover:shadow-[0_3px_10px_rgba(7,90,145,0.12)] active:scale-[0.97]"
                         >
-                            <Printer size={10} />
-                            PRINT
+                            <Printer
+                                size={10}
+                                className="transition-transform duration-200 group-hover:scale-110"
+                            />
+
+                            <span>PRINT</span>
                         </button>
 
                     </div>
@@ -142,7 +273,7 @@ export default function ApprovalRightPanel({
 
                     <div className="p-3 sm:p-4">
 
-                        <div className="relative overflow-hidden rounded-[9px] border border-[#cdbd82] bg-[#fffdf7] shadow-[0_4px_18px_rgba(128,106,50,0.10)]">
+                        <div id="gp-resolution-certificate" className="relative overflow-hidden rounded-[9px] border border-[#cdbd82] bg-[#fffdf7] shadow-[0_4px_18px_rgba(128,106,50,0.10)]">
 
                             {/* OUTER GOLD ACCENT */}
 
@@ -590,14 +721,14 @@ export default function ApprovalRightPanel({
 
                                                 <span
                                                     className={`inline-flex max-w-full items-center gap-1 rounded-full px-2 py-1 ${work.theme === "Water Security"
-                                                            ? "bg-[#fff7ed] text-[#c76a00]"
+                                                        ? "bg-[#fff7ed] text-[#c76a00]"
+                                                        : work.theme ===
+                                                            "Rural Infrastructure"
+                                                            ? "bg-[#f5f0ff] text-[#7c3aed]"
                                                             : work.theme ===
-                                                                "Rural Infrastructure"
-                                                                ? "bg-[#f5f0ff] text-[#7c3aed]"
-                                                                : work.theme ===
-                                                                    "Livelihood Infrastructure"
-                                                                    ? "bg-[#effbf5] text-[#00875a]"
-                                                                    : "bg-[#eef8fc] text-[#0879b1]"
+                                                                "Livelihood Infrastructure"
+                                                                ? "bg-[#effbf5] text-[#00875a]"
+                                                                : "bg-[#eef8fc] text-[#0879b1]"
                                                         }`}
                                                 >
 
@@ -618,8 +749,8 @@ export default function ApprovalRightPanel({
 
                                                 <span
                                                     className={`inline-flex rounded-full border px-2 py-1 text-[6px] font-extrabold ${work.type === "Repair"
-                                                            ? "border-[#fecaca] bg-[#fff5f5] text-[#dc2626]"
-                                                            : "border-[#bce6d5] bg-[#effbf5] text-[#00875a]"
+                                                        ? "border-[#fecaca] bg-[#fff5f5] text-[#dc2626]"
+                                                        : "border-[#bce6d5] bg-[#effbf5] text-[#00875a]"
                                                         }`}
                                                 >
                                                     {work.type}
@@ -677,8 +808,8 @@ export default function ApprovalRightPanel({
 
                                 <span
                                     className={`h-1.5 w-1.5 rounded-full ${allGeotagged
-                                            ? "bg-[#00875a]"
-                                            : "bg-[#d97706]"
+                                        ? "bg-[#00875a]"
+                                        : "bg-[#d97706]"
                                         }`}
                                 />
 

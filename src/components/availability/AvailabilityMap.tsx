@@ -141,30 +141,46 @@ export default function AvailabilityMap({
   const isPinMode = mode === "pin";
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col overflow-hidden">
-      {/* --------------------------------
-          NORMAL MODE HEADER
-      --------------------------------- */}
+    <div className="flex h-full min-h-[400px] w-full min-w-0 flex-col overflow-hidden rounded-[6px] border border-[#cbdde8] bg-white shadow-[0_4px_16px_rgba(0,59,99,0.08)]">
 
-      {!isPinMode && (
-        <div className="flex h-9 shrink-0 items-center border-b border-[#d4e2eb] bg-[#eaf6fd] px-3">
-          <span className="text-[12px] font-semibold text-[#0874b5]">
-            Availability Map — Kaladagi, Bagalkot Block
-          </span>
+      {/* =====================================
+          TOP HEADER
+      ====================================== */}
+
+      <div className="shrink-0 border-b border-[#c9dce8] bg-[#f3f9fc]">
+
+        {/* BRAND STRIPE */}
+
+        <div className="flex h-[3px] w-full">
+          <div className="flex-1 bg-[#075a91]" />
+          <div className="w-[70px] bg-[#f58220]" />
         </div>
-      )}
 
-      {/* --------------------------------
-          MAP
-      --------------------------------- */}
+        {/* NORMAL MODE HEADER */}
+
+        {!isPinMode && (
+          <div className="flex h-9 items-center border-b border-[#d4e2eb] bg-[#eaf6fd] px-3">
+            <span className="text-[12px] font-semibold text-[#0874b5]">
+              Availability Map — Kaladagi, Bagalkot Block
+            </span>
+          </div>
+        )}
+
+      </div>
+
+      {/* =====================================
+          MAP AREA
+      ====================================== */}
 
       <div className="relative min-h-0 flex-1">
+
         <MapContainer
           center={center}
           zoom={11}
           zoomControl={false}
-          className="absolute inset-0 h-full w-full"
+          className="absolute inset-0 z-0 h-full w-full"
         >
+
           <ZoomControl position="topleft" />
 
           <TileLayer
@@ -211,6 +227,7 @@ export default function AvailabilityMap({
                 >
                   <Popup>
                     <div className="text-xs">
+
                       <div className="font-semibold">
                         {work.workName}
                       </div>
@@ -218,6 +235,7 @@ export default function AvailabilityMap({
                       <div className="mt-1 text-slate-500">
                         {work.vgpId}
                       </div>
+
                     </div>
                   </Popup>
                 </Marker>
@@ -250,14 +268,16 @@ export default function AvailabilityMap({
               }}
             />
           )}
+
         </MapContainer>
 
-        {/* --------------------------------
+        {/* =====================================
             LEGEND
-        --------------------------------- */}
+        ====================================== */}
 
         {!isPinMode ? (
           <div className="absolute bottom-3 left-3 z-[1000] rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-md">
+
             <div className="mb-1 text-[9px] font-semibold text-slate-500">
               LEGEND
             </div>
@@ -271,16 +291,21 @@ export default function AvailabilityMap({
               <span className="h-2 w-2 rounded-full bg-[#16a34a]" />
               Manually added
             </div>
+
           </div>
         ) : (
           <div className="absolute bottom-3 left-3 z-[1000] rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-md">
+
             <div className="flex items-center gap-2 text-[9px] text-slate-600">
               <span className="h-2 w-2 rounded-full bg-[#0796d2]" />
               Pinned location (drag to adjust)
             </div>
+
           </div>
         )}
+
       </div>
+
     </div>
   );
 }
