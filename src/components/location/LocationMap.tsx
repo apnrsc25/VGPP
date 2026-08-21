@@ -29,6 +29,7 @@ interface LocationMapProps {
   label: string;
 
   level:
+  | "national"
   | "state"
   | "district"
   | "block"
@@ -54,6 +55,7 @@ const GIS_BASE_URL =
   "https://mapservice.gov.in/mapserviceserv176/rest/services/Panchayat/AdminGPHierarchy/MapServer";
 
 const LAYER_MAP = {
+  national: 0,
   state: 0,
   district: 1,
   block: 2,
@@ -219,6 +221,18 @@ export default function LocationMap({
   =================================================== */
 
   const where = useMemo(() => {
+
+    /* =================================================
+       NATIONAL
+       
+       India ke saare state polygons load honge.
+       Layer 0 = State layer.
+    ================================================= */
+
+    if (level === "national") {
+      return "1=1";
+    }
+
     if (!stateName) {
       return "";
     }
@@ -227,11 +241,7 @@ export default function LocationMap({
       escapeSql(stateName).toUpperCase();
 
     /* =================================================
-       STATE - LAYER 0
-
-       Example:
-
-       STNAME='JHARKHAND'
+       STATE
     ================================================= */
 
     if (level === "state") {
@@ -239,44 +249,26 @@ export default function LocationMap({
     }
 
     /* =================================================
-       DISTRICT - LAYER 1
-
-       IMPORTANT:
-
-       Your GIS service is returning Ranchi geometry
-       with:
-
-       stname='JHARKHAND'
-       AND D_Pan_Name='RANCHI'
-
-       NOT DTNAME='RANCHI'
+       DISTRICT
     ================================================= */
 
     if (
       level === "district" &&
       districtName
     ) {
-      const district = escapeSql(districtName).toUpperCase();
+      const district =
+        escapeSql(
+          districtName
+        ).toUpperCase();
 
       return [
         `stname='${state}'`,
         `D_Pan_Name='${district}'`,
       ].join(" AND ");
     }
+
     /* =================================================
-       BLOCK - LAYER 2
-
-       Fields from Layer 2:
-
-       state
-       district
-       block_name
-
-       Example:
-
-       state='JHARKHAND'
-       AND district='RANCHI'
-       AND block_name='KANKE'
+       BLOCK
     ================================================= */
 
     if (
@@ -284,8 +276,15 @@ export default function LocationMap({
       districtName &&
       blockName
     ) {
-      const district = escapeSql(districtName);
-      const block = escapeSql(blockName).toUpperCase();
+      const district =
+        escapeSql(
+          districtName
+        );
+
+      const block =
+        escapeSql(
+          blockName
+        ).toUpperCase();
 
       return [
         `state='${state}'`,
@@ -295,30 +294,20 @@ export default function LocationMap({
     }
 
     /* =================================================
-       PANCHAYAT - LAYER 3
-
-       Fields from Layer 3:
-
-       STNAME
-       DTNAME
-       blkname
-       GPNAME
-
-       Example:
-
-       STNAME='JHARKHAND'
-       AND DTNAME='RANCHI'
-       AND blkname='KANKE'
-       AND GPNAME='K...'
+       PANCHAYAT
     ================================================= */
 
-    if (level === "panchayat" && panchayatCode) {
-      return `GPCODE='${escapeSql(panchayatCode)}'`;
+    if (
+      level === "panchayat" &&
+      panchayatCode
+    ) {
+      return `GPCODE='${escapeSql(
+        panchayatCode
+      )}'`;
     }
 
-
-
     return "";
+
   }, [
     level,
     stateName,
@@ -478,7 +467,18 @@ export default function LocationMap({
 
   const boundaryStyle =
     useMemo(() => {
+
       switch (level) {
+
+        case "national":
+          return {
+            color: "#075a91",
+            weight: 2,
+            opacity: 1,
+            fillColor: "#075a91",
+            fillOpacity: 0.10,
+          };
+
         case "state":
           return {
             color: "#075a91",
@@ -512,7 +512,7 @@ export default function LocationMap({
             weight: 4,
             opacity: 1,
             fillColor: "#00875a",
-            fillOpacity: 0.1,
+            fillOpacity: 0.10,
             dashArray: "6 4",
           };
 
@@ -524,9 +524,8 @@ export default function LocationMap({
             fillOpacity: 0.08,
           };
       }
-    }, [
-      level,
-    ]);
+
+    }, [level]);
 
   /* ===================================================
      RETURN

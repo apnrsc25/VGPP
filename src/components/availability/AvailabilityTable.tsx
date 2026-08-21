@@ -223,7 +223,7 @@ export default function AvailabilityTable({
           TABLE
       ====================================================== */}
 
-      <div className="min-h-0 flex-1 overflow-auto">
+      <div className="min-h-0 flex-1 overflow-y-auto">
 
         <table className="w-full min-w-[700px] table-fixed border-collapse">
 

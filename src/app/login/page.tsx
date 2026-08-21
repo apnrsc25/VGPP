@@ -102,6 +102,7 @@ export default function LoginPage() {
      */
 
     if (
+      user.role === "National Admin" ||
       user.role === "State Admin" ||
       user.role === "District Admin" ||
       user.role === "Block Admin" ||
@@ -420,9 +421,9 @@ export default function LoginPage() {
               <div className="space-y-1.5 text-[8px] text-slate-500">
 
                 <div className="flex justify-between gap-3">
-                  <span>Panchayat / Planner</span>
+                  <span>National Admin</span>
                   <span className="font-semibold text-[#003b63]">
-                    panchayat@gmail.com
+                    national@gmail.com
                   </span>
                 </div>
 
@@ -444,6 +445,13 @@ export default function LoginPage() {
                   <span>Block Admin</span>
                   <span className="font-semibold text-[#003b63]">
                     block@gmail.com
+                  </span>
+                </div>
+
+                <div className="flex justify-between gap-3">
+                  <span>Panchayat / Planner</span>
+                  <span className="font-semibold text-[#003b63]">
+                    panchayat@gmail.com
                   </span>
                 </div>
 

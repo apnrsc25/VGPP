@@ -29,8 +29,8 @@ interface ApprovalLeafletMapProps {
 }
 
 const DEFAULT_CENTER: [number, number] = [
-  23.3441,
-  85.3096,
+  20.259,
+  81.294,
 ];
 
 function MapBounds({

@@ -7,12 +7,6 @@ function escapeSql(value: string) {
   return value.trim().replace(/'/g, "''");
 }
 
-/**
- * STATE
- *
- * Layer: 0
- * Field: STNAME
- */
 export function getStateQuery(
   stateName: string
 ): LocationQuery {
@@ -26,18 +20,6 @@ export function getStateQuery(
   };
 }
 
-/**
- * DISTRICT
- *
- * Layer: 1
- *
- * IMPORTANT:
- * District name is stored in D_Pan_Name.
- *
- * Example:
- * stname='JHARKHAND'
- * AND D_Pan_Name='RANCHI'
- */
 export function getDistrictQuery(
   stateName: string,
   districtName: string
@@ -58,16 +40,6 @@ export function getDistrictQuery(
   };
 }
 
-/**
- * BLOCK
- *
- * Layer: 2
- *
- * Fields:
- * state
- * district
- * block_name
- */
 export function getBlockQuery(
   stateName: string,
   districtName: string,
@@ -94,17 +66,6 @@ export function getBlockQuery(
   };
 }
 
-/**
- * GRAM PANCHAYAT
- *
- * Layer: 3
- *
- * Fields:
- * STNAME
- * DTNAME
- * blkname
- * GPNAME
- */
 export function getPanchayatQuery(
   stateName: string,
   districtName: string,

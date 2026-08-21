@@ -8,7 +8,7 @@ import {
 
 import { useMemo, useState } from "react";
 
-import type { Work } from "@/types/work";
+import type { Work, WorkType } from "@/types/work";
 
 import RequirementTable from "./RequirementTable";
 import RequirementsSourceTabs from "./RequirementsSourceTabs";
@@ -81,7 +81,7 @@ export default function RequirementsWorkspace({
         useState<string[]>([]);
 
     const [selectedTypes, setSelectedTypes] =
-        useState<("New" | "Repair")[]>([]);
+        useState<WorkType[]>([]);
 
     /*
      * ---------------------------------------------------------
@@ -504,12 +504,8 @@ export default function RequirementsWorkspace({
      */
 
     return (
-        <div className="relative min-h-0 w-full">
-            <div className="grid min-h-[calc(100vh-130px)] grid-cols-1 gap-3 px-2 pb-2 sm:gap-4 sm:pb-1 lg:grid-cols-2 lg:pb-2">
-
-                {/* =====================================================
-            LEFT - WORK CATALOGUE
-        ===================================================== */}
+        <div className="flex h-[calc(100dvh-128px)] min-h-0 w-full flex-col overflow-hidden">
+            <div className="grid min-h-0 h-full flex-1 grid-cols-1 gap-2 overflow-hidden px-2 p-2 sm:gap-2 lg:grid-cols-2">
 
                 <section className="relative flex min-h-[560px] min-w-0 flex-col overflow-hidden rounded-[8px] border border-[#c7dce8] bg-white shadow-[0_8px_28px_rgba(0,59,99,0.09)] lg:min-h-0">
 
@@ -649,8 +645,6 @@ export default function RequirementsWorkspace({
 
                             </div>
                         </div>
-
-=\
 
                         {showFilters && (
                             <>
@@ -852,10 +846,6 @@ export default function RequirementsWorkspace({
 
                     </div>
 
-                    {/* =================================================
-              SOURCE TABS
-          ================================================= */}
-
                     <RequirementsSourceTabs
                         activeTab={activeTab}
                         onChange={(tab) => {
@@ -868,10 +858,6 @@ export default function RequirementsWorkspace({
                             setShowFilters(false);
                         }}
                     />
-
-                    {/* =================================================
-              CATEGORY SUMMARY
-          ================================================= */}
 
                     <div className="grid h-16 shrink-0 grid-cols-4 border-b border-[#dce7ed] bg-white">
 
@@ -916,10 +902,6 @@ export default function RequirementsWorkspace({
                         )}
 
                     </div>
-
-                    {/* =================================================
-              LEFT TABLE
-          ================================================= */}
 
                     <RequirementTable
                         works={filteredWorks}
@@ -1198,7 +1180,8 @@ export default function RequirementsWorkspace({
 
             {/* NEXT */}
 
-            <div className="absolute right-3 z-40">
+            <div className="z-20 flex h-[52px] shrink-0 items-center justify-end border-t border-[#d5e2ea] bg-white px-3 shadow-[0_-3px_12px_rgba(0,59,99,0.08)] sm:h-[56px] sm:px-4">
+
 
                 <button
                     type="button"

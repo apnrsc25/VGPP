@@ -70,70 +70,44 @@ export default function ApprovalWorkspace({
 
 
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-[#f3f7fa]">
+    <div className="flex h-[calc(100dvh-128px)] min-h-0 w-full flex-col overflow-hidden bg-[#f3f7fa]">
 
       {/* =====================================================
           MAIN APPROVAL AREA
       ====================================================== */}
 
-      <div className="min-h-0 flex-1 overflow-hidden px-2 sm:px-2.5 sm:pb-2.5">
 
-        <div className="grid h-full min-h-0 grid-cols-1 gap-2.5 xl:grid-cols-[1fr_1fr]">
 
-          {/* =================================================
+      <div  className="grid min-h-0 h-full flex-1 grid-cols-1 gap-2 overflow-hidden px-2 p-2 sm:gap-2 lg:grid-cols-2">
+
+        {/* =================================================
               LEFT — MAP
           ================================================== */}
 
-          <div className="relative min-h-0 overflow-hidden">
+        <div className="flex min-h-0 min-w-0 flex-col overflow-hidden">
+
+          <div className="min-h-0 flex-1">
 
             <ApprovalMap
               proposalId={proposalId}
               selectedWorks={selectedWorks}
             />
 
-            {locationHierarchy && (
-              <div className="pointer-events-none absolute left-3 top-28 z-[1000] max-w-[calc(100%-24px)]">
-
-                <div className="rounded-[7px] border border-white/80 bg-white/95 px-3 py-2 shadow-[0_6px_20px_rgba(0,59,99,0.16)] backdrop-blur">
-
-                  <div className="flex items-center gap-1.5">
-
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#f58220]" />
-
-                    <span className="text-[7px] font-extrabold uppercase tracking-[0.8px] text-[#f58220]">
-                      APPROVAL LOCATION
-                    </span>
-
-                  </div>
-
-                  <div className="mt-1 text-[10px] font-extrabold text-[#003b63] sm:text-[11px]">
-                    {locationHierarchy}
-                  </div>
-
-                  <div className="mt-0.5 text-[6px] font-semibold uppercase tracking-[0.6px] text-slate-400">
-                    Analysis & Certificate
-                  </div>
-
-                </div>
-
-              </div>
-            )}
-
           </div>
 
+        </div>
 
-          {/* =================================================
+
+        {/* =================================================
               RIGHT — APPROVAL
           ================================================== */}
 
-          <div className="min-h-0 overflow-hidden">
+        <div className="relative flex min-h-0 min-w-0 flex-col overflow-hidden">
 
-            <ApprovalRightPanel
-              proposalId={proposalId}
-              selectedWorks={selectedWorks}
-            />
-
-          </div>
+          <ApprovalRightPanel
+            proposalId={proposalId}
+            selectedWorks={selectedWorks}
+          />
 
         </div>
 

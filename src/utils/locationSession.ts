@@ -6,10 +6,10 @@ export interface SessionLocation {
 }
 
 export const DEFAULT_LOCATION: SessionLocation = {
-  state: "Jharkhand",
-  district: "Ranchi",
-  block: "Kanke",
-  panchayat: "Kanke (North)",
+  state: "Chhattisgarh",
+  district: "Uttar Bastar",
+  block: "Kanker",
+  panchayat: "Sureli",
 };
 
 const STORAGE_KEY = "vgpp_location";

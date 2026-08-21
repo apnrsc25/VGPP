@@ -120,15 +120,15 @@ export default function CreateAssetPage() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-[#eef5f8] p-2 sm:p-3 lg:p-4">
+    <main className="flex h-[calc(100dvh-120px)] min-h-0 w-full flex-col overflow-hidden bg-[#eef5f8] p-2 sm:p-2 lg:p-2">
 
-      <div className="grid min-h-[calc(100vh-16px)] grid-cols-1 gap-3 sm:min-h-[calc(100vh-24px)] sm:gap-4 lg:min-h-[calc(100vh-32px)] lg:gap-4 xl:h-[calc(100vh-32px)] xl:grid-cols-[395px_minmax(0,1fr)]">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-2 overflow-hidden sm:gap-2 xl:grid-cols-[395px_minmax(0,1fr)]">
 
         {/* =====================================================
             LEFT - FORM
         ====================================================== */}
 
-        <section className="flex min-h-[620px] min-w-0 flex-col overflow-hidden rounded-[6px] border border-[#cbdde8] bg-white shadow-[0_4px_16px_rgba(0,59,99,0.08)] xl:min-h-0">
+        <section className="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-[6px] border border-[#cbdde8] bg-white shadow-[0_4px_16px_rgba(0,59,99,0.08)]">
           <CreateAssetForm
             works={works}
             selectedWorkId={selectedWorkId}
@@ -160,7 +160,7 @@ export default function CreateAssetPage() {
             RIGHT - MAP
         ====================================================== */}
 
-        <section className="flex min-h-[420px] min-w-0 flex-col overflow-hidden rounded-[6px] border border-[#cbdde8] bg-white shadow-[0_4px_16px_rgba(0,59,99,0.08)] sm:min-h-[500px] xl:min-h-0">
+        <section className="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-[6px] border border-[#cbdde8] bg-white shadow-[0_4px_16px_rgba(0,59,99,0.08)]">
 
           {/* MAP HEADER */}
 

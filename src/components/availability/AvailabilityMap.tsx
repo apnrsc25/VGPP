@@ -38,18 +38,19 @@ interface AvailabilityMapProps {
 }
 
 const center: [number, number] = [
-  15.255,
-  75.125,
+  20.259,
+  81.294,
 ];
 
 const boundary: [number, number][] = [
-  [15.29, 75.10],
-  [15.31, 75.15],
-  [15.28, 75.17],
-  [15.22, 75.16],
-  [15.20, 75.11],
-  [15.24, 75.09],
-  [15.29, 75.10],
+  [20.268, 81.286],
+  [20.270, 81.300],
+  [20.264, 81.309],
+  [20.254, 81.311],
+  [20.247, 81.302],
+  [20.248, 81.290],
+  [20.255, 81.284],
+  [20.268, 81.286],
 ];
 
 /* ----------------------------------------
@@ -141,7 +142,7 @@ export default function AvailabilityMap({
   const isPinMode = mode === "pin";
 
   return (
-    <div className="flex h-full min-h-[400px] w-full min-w-0 flex-col overflow-hidden rounded-[6px] border border-[#cbdde8] bg-white shadow-[0_4px_16px_rgba(0,59,99,0.08)]">
+    <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden rounded-[6px] border border-[#cbdde8] bg-white shadow-[0_4px_16px_rgba(0,59,99,0.08)]">
 
       {/* =====================================
           TOP HEADER
@@ -161,7 +162,7 @@ export default function AvailabilityMap({
         {!isPinMode && (
           <div className="flex h-9 items-center border-b border-[#d4e2eb] bg-[#eaf6fd] px-3">
             <span className="text-[12px] font-semibold text-[#0874b5]">
-              Availability Map — Kaladagi, Bagalkot Block
+              Availability Map — Sureli, Kanker, Uttar Bastar, Chhattisgarh
             </span>
           </div>
         )}
@@ -176,7 +177,7 @@ export default function AvailabilityMap({
 
         <MapContainer
           center={center}
-          zoom={11}
+          zoom={13}
           zoomControl={false}
           className="absolute inset-0 z-0 h-full w-full"
         >
