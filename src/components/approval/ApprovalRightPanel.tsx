@@ -21,151 +21,27 @@ interface SelectedWork {
 }
 
 interface ApprovalRightPanelProps {
-    selectedWorks: SelectedWork[];
+    finalWorks: SelectedWork[];
     proposalId: string;
 }
 
 export default function ApprovalRightPanel({
-    selectedWorks,
+    finalWorks,
     proposalId,
 }: ApprovalRightPanelProps) {
 
-    const geotaggedCount = selectedWorks.filter(
+    const geotaggedCount = finalWorks.filter(
         (work) => work.geotagged
     ).length;
 
     const notGeotaggedCount =
-        selectedWorks.length - geotaggedCount;
+        finalWorks.length - geotaggedCount;
 
-    const readyCount = selectedWorks.length;
+    const readyCount = finalWorks.length;
 
     const allGeotagged =
-        selectedWorks.length > 0 &&
-        geotaggedCount === selectedWorks.length;
-
-    const handlePrintCertificate = () => {
-        const certificate = document.getElementById(
-            "gp-resolution-certificate"
-        );
-
-        if (!certificate) {
-            console.error("Certificate element not found.");
-            return;
-        }
-
-        const iframe = document.createElement("iframe");
-
-        iframe.style.position = "fixed";
-        iframe.style.right = "0";
-        iframe.style.bottom = "0";
-        iframe.style.width = "0";
-        iframe.style.height = "0";
-        iframe.style.border = "0";
-        iframe.style.opacity = "0";
-
-        document.body.appendChild(iframe);
-
-        const printDocument = iframe.contentDocument;
-
-        if (!printDocument) {
-            document.body.removeChild(iframe);
-            return;
-        }
-
-        const styles = Array.from(
-            document.querySelectorAll(
-                'link[rel="stylesheet"], style'
-            )
-        )
-            .map((element) => element.outerHTML)
-            .join("\n");
-
-        printDocument.open();
-
-        printDocument.write(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>GP Resolution Certificate</title>
-
-        ${styles}
-
-        <style>
-          @page {
-            size: A4 landscape;
-            margin: 8mm;
-          }
-
-          html,
-          body {
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
-            background: #ffffff !important;
-          }
-
-          body {
-            overflow: visible !important;
-          }
-
-          #gp-resolution-certificate {
-            display: block !important;
-            width: 100% !important;
-            max-width: none !important;
-            margin: 0 !important;
-            padding: 0 !important;
-
-            border-radius: 0 !important;
-            box-shadow: none !important;
-
-            background: #fffdf7 !important;
-
-            visibility: visible !important;
-
-            print-color-adjust: exact !important;
-            -webkit-print-color-adjust: exact !important;
-          }
-
-          #gp-resolution-certificate * {
-            visibility: visible !important;
-            print-color-adjust: exact !important;
-            -webkit-print-color-adjust: exact !important;
-          }
-        </style>
-      </head>
-
-      <body>
-        ${certificate.outerHTML}
-      </body>
-    </html>
-  `);
-
-        printDocument.close();
-
-        const printWindow = iframe.contentWindow;
-
-        if (!printWindow) {
-            document.body.removeChild(iframe);
-            return;
-        }
-
-        const cleanup = () => {
-            setTimeout(() => {
-                if (iframe.parentNode) {
-                    iframe.parentNode.removeChild(iframe);
-                }
-            }, 500);
-        };
-
-        iframe.onload = () => {
-            setTimeout(() => {
-                printWindow.focus();
-                printWindow.print();
-
-                cleanup();
-            }, 300);
-        };
-    };
+        finalWorks.length > 0 &&
+        geotaggedCount === finalWorks.length;
 
     return (
         <section className="flex min-h-[560px] min-w-0 flex-col overflow-hidden rounded-[10px] border border-[#d5e2ea] bg-white shadow-[0_4px_18px_rgba(0,59,99,0.08)] xl:min-h-0">
@@ -216,15 +92,7 @@ export default function ApprovalRightPanel({
             </div>
 
 
-            {/* =====================================================
-          MAIN SCROLL AREA
-      ====================================================== */}
-
             <div className="min-h-0 flex-1 overflow-auto">
-
-                {/* ===================================================
-            CERTIFICATE SECTION
-        ==================================================== */}
 
                 <section className="border-b border-[#d7e5ed] bg-[#f8fafb]">
 
@@ -252,20 +120,6 @@ export default function ApprovalRightPanel({
 
                         </div>
 
-
-                        <button
-                            type="button"
-                            onClick={handlePrintCertificate}
-                            className="group flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-[6px] border border-[#b9d7ed] bg-white px-2.5 text-[7px] font-extrabold text-[#075a91] shadow-sm transition-all duration-200 hover:border-[#075a91] hover:bg-[#eef7fb] hover:shadow-[0_3px_10px_rgba(7,90,145,0.12)] active:scale-[0.97]"
-                        >
-                            <Printer
-                                size={10}
-                                className="transition-transform duration-200 group-hover:scale-110"
-                            />
-
-                            <span>PRINT</span>
-                        </button>
-
                     </div>
 
 
@@ -284,10 +138,6 @@ export default function ApprovalRightPanel({
                             <div className="m-[5px] rounded-[6px] border border-dashed border-[#d8c98f]">
 
                                 <div className="px-4 py-4 sm:px-5 sm:py-5">
-
-                                    {/* =====================================================
-          GOVERNMENT HEADER
-      ====================================================== */}
 
                                     <div className="flex items-start justify-between gap-5">
 
@@ -326,17 +176,7 @@ export default function ApprovalRightPanel({
 
                                     </div>
 
-
-                                    {/* =====================================================
-          TITLE DIVIDER
-      ====================================================== */}
-
                                     <div className="my-3 border-t border-[#d8c98f]" />
-
-
-                                    {/* =====================================================
-          CERTIFICATE TITLE
-      ====================================================== */}
 
                                     <div className="text-center">
 
@@ -350,17 +190,7 @@ export default function ApprovalRightPanel({
 
                                     </div>
 
-
-                                    {/* =====================================================
-          TITLE DIVIDER
-      ====================================================== */}
-
                                     <div className="my-3 border-t border-[#d8c98f]" />
-
-
-                                    {/* =====================================================
-          RESOLUTION BODY
-      ====================================================== */}
 
                                     <p className="text-[7px] leading-[1.85] text-[#252525] sm:text-[8px]">
 
@@ -381,7 +211,7 @@ export default function ApprovalRightPanel({
                                         its Gram Sabha meeting to undertake a total of
 
                                         <strong className="mx-1 font-extrabold text-[#075a91]">
-                                            {selectedWorks.length}
+                                            {finalWorks.length}
                                         </strong>
 
                                         works under the Viksit Bharat Guarantee for Rozgar and Ajeevika
@@ -400,11 +230,6 @@ export default function ApprovalRightPanel({
                                         manner.
 
                                     </p>
-
-
-                                    {/* =====================================================
-          SIGNATURE AREA
-      ====================================================== */}
 
                                     <div className="mt-5 grid grid-cols-3 gap-5">
 
@@ -460,11 +285,6 @@ export default function ApprovalRightPanel({
 
                                     </div>
 
-
-                                    {/* =====================================================
-          PLACE & DATE
-      ====================================================== */}
-
                                     <div className="mt-4 flex items-end justify-between">
 
                                         <div>
@@ -505,8 +325,6 @@ export default function ApprovalRightPanel({
                             </div>
 
 
-                            {/* BOTTOM GOLD ACCENT */}
-
                             <div className="h-[3px] bg-gradient-to-r from-[#806a32] via-[#d8c98f] to-[#806a32]" />
 
                         </div>
@@ -514,11 +332,6 @@ export default function ApprovalRightPanel({
                     </div>
 
                 </section>
-
-
-                {/* ===================================================
-            GAP ANALYSIS TABLE
-        ==================================================== */}
 
                 <section className="bg-white">
 
@@ -576,7 +389,7 @@ export default function ApprovalRightPanel({
 
 
                             <span className="rounded-full bg-[#edf7fc] px-2 py-1 text-[7px] font-extrabold text-[#075a91]">
-                                {selectedWorks.length}
+                                {finalWorks.length}
                             </span>
 
                         </div>
@@ -586,7 +399,7 @@ export default function ApprovalRightPanel({
 
                     {/* TABLE */}
 
-                    <div className="max-h-[330px] overflow-auto">
+                    <div className="approval-print-table max-h-[330px] overflow-auto">
 
                         <table className="w-full min-w-[650px] border-collapse">
 
@@ -629,7 +442,7 @@ export default function ApprovalRightPanel({
 
                             <tbody>
 
-                                {selectedWorks.length === 0 ? (
+                                {finalWorks.length === 0 ? (
                                     <tr>
 
                                         <td
@@ -658,7 +471,7 @@ export default function ApprovalRightPanel({
 
                                     </tr>
                                 ) : (
-                                    selectedWorks.map((work, index) => (
+                                    finalWorks.map((work, index) => (
 
                                         <tr
                                             key={`gap-analysis-${work.id}`}
@@ -801,7 +614,7 @@ export default function ApprovalRightPanel({
 
                     {/* TABLE FOOTER */}
 
-                    {selectedWorks.length > 0 && (
+                    {finalWorks.length > 0 && (
                         <div className="flex min-h-9 items-center justify-between border-t border-[#e1ebf0] bg-[#f8fbfd] px-3">
 
                             <div className="flex items-center gap-1.5">
@@ -825,7 +638,7 @@ export default function ApprovalRightPanel({
 
 
                             <span className="hidden text-[7px] font-bold text-slate-400 sm:block">
-                                {selectedWorks.length} TOTAL WORKS
+                                {finalWorks.length} TOTAL WORKS
                             </span>
 
                         </div>
@@ -838,689 +651,3 @@ export default function ApprovalRightPanel({
         </section>
     );
 }
-
-
-
-
-
-
-
-
-
-// "use client";
-
-// import {
-//   CheckCircle2,
-//   ClipboardCheck,
-//   MapPinned,
-//   Printer,
-//   ShieldCheck,
-//   Stamp,
-// } from "lucide-react";
-
-// interface SelectedWork {
-//   id: string;
-//   workName: string;
-//   theme: string;
-//   subTheme: string;
-//   type: string;
-//   geotagged: boolean;
-// }
-
-// interface ApprovalRightPanelProps {
-//   selectedWorks: SelectedWork[];
-//   proposalId: string;
-// }
-
-// export default function ApprovalRightPanel({
-//   selectedWorks,
-//   proposalId,
-// }: ApprovalRightPanelProps) {
-//   const geotaggedCount = selectedWorks.filter(
-//     (work) => work.geotagged
-//   ).length;
-
-//   const notGeotaggedCount =
-//     selectedWorks.length - geotaggedCount;
-
-//   const readyCount = selectedWorks.length;
-
-//   const allGeotagged =
-//     selectedWorks.length > 0 &&
-//     geotaggedCount === selectedWorks.length;
-
-//   return (
-//     <section className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden rounded-[10px] border border-[#d5e2ea] bg-white shadow-[0_4px_18px_rgba(0,59,99,0.08)]">
-
-//       {/* =====================================================
-//           HEADER
-//       ====================================================== */}
-
-//       <div className="flex h-11 shrink-0 items-center justify-between border-b border-[#d7e5ed] bg-gradient-to-r from-[#f8fbfd] via-white to-[#fffaf5] px-3">
-
-//         <div className="flex min-w-0 items-center gap-2.5">
-
-//           <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] bg-[#008f6a] text-white shadow-sm">
-//             <ShieldCheck size={14} />
-//           </div>
-
-//           <div className="min-w-0">
-//             <h2 className="truncate text-[11px] font-extrabold uppercase tracking-[0.45px] text-[#183b56] sm:text-[12px]">
-//               Approval Review
-//             </h2>
-
-//             <p className="truncate text-[7px] text-slate-400 sm:text-[8px]">
-//               Final verification before submission
-//             </p>
-//           </div>
-
-//         </div>
-
-//         <div className="flex shrink-0 items-center gap-1.5">
-
-//           <span className="rounded-full border border-[#cce8da] bg-[#effbf5] px-2 py-1 text-[6px] font-extrabold text-[#00875a] sm:text-[7px]">
-//             {readyCount} READY
-//           </span>
-
-//           <span className="max-w-[100px] truncate rounded-full bg-[#edf7fc] px-2 py-1 text-[6px] font-extrabold text-[#075a91] sm:text-[7px]">
-//             {proposalId}
-//           </span>
-
-//         </div>
-
-//       </div>
-
-
-//       {/* =====================================================
-//           MAIN CONTENT
-//       ====================================================== */}
-
-//       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-
-
-//         {/* ===================================================
-//             CERTIFICATE
-//         ==================================================== */}
-
-//         <section className="shrink-0 border-b border-[#d7e5ed] bg-[#f8fafb]">
-
-//           {/* CERTIFICATE HEADER */}
-
-//           <div className="flex h-10 items-center justify-between border-b border-[#e2ebf0] px-3">
-
-//             <div className="flex min-w-0 items-center gap-2">
-
-//               <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[5px] bg-[#fff6e9] text-[#c76a00]">
-//                 <Stamp size={12} />
-//               </div>
-
-//               <div className="min-w-0">
-
-//                 <h3 className="truncate text-[9px] font-extrabold uppercase tracking-[0.45px] text-[#365a7a]">
-//                   GP Resolution Certificate
-//                 </h3>
-
-//                 <p className="truncate text-[6px] text-slate-400">
-//                   Official Gram Panchayat Resolution
-//                 </p>
-
-//               </div>
-
-//             </div>
-
-//             <button
-//               type="button"
-//               className="flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-[5px] border border-[#b9d7ed] bg-white px-2.5 text-[7px] font-extrabold text-[#075a91] shadow-sm transition hover:border-[#075a91] hover:bg-[#eef7fb] active:scale-[0.98]"
-//             >
-//               <Printer size={10} />
-//               PRINT
-//             </button>
-
-//           </div>
-
-
-//           {/* CERTIFICATE */}
-
-//           <div className="px-3 py-2.5 sm:px-4">
-
-//             <div className="relative overflow-hidden rounded-[8px] border border-[#cdbd82] bg-[#fffdf7] shadow-[0_3px_14px_rgba(128,106,50,0.08)]">
-
-//               {/* GOLD TOP */}
-
-//               <div className="h-[3px] bg-gradient-to-r from-[#806a32] via-[#d8c98f] to-[#806a32]" />
-
-
-//               <div className="m-[4px] rounded-[5px] border border-dashed border-[#d8c98f]">
-
-//                 <div className="px-3 py-3 sm:px-4 sm:py-3.5">
-
-
-//                   {/* GOVERNMENT HEADER */}
-
-//                   <div className="flex items-start justify-between gap-4">
-
-//                     <div>
-
-//                       <p className="text-[6px] font-bold tracking-[1.2px] text-[#806a32]">
-//                         GOVERNMENT OF INDIA
-//                       </p>
-
-//                       <p className="mt-0.5 text-[9px] font-extrabold tracking-[0.55px] text-[#171717] sm:text-[10px]">
-//                         MINISTRY OF RURAL DEVELOPMENT
-//                       </p>
-
-//                       <p className="mt-0.5 text-[6px] font-bold tracking-[0.8px] text-[#806a32]">
-//                         VBG-RAM — SATURATED MODE
-//                       </p>
-
-//                     </div>
-
-//                     <div className="shrink-0 text-right text-[5px] leading-[1.6] text-[#806a32] sm:text-[6px]">
-
-//                       <p>
-//                         Ref. No.: GP/VBGRAMG/2025–26/___
-//                       </p>
-
-//                       <p>
-//                         Date: 18 August 2026
-//                       </p>
-
-//                     </div>
-
-//                   </div>
-
-
-//                   {/* TITLE */}
-
-//                   <div className="my-2 border-t border-[#d8c98f]" />
-
-//                   <div className="text-center">
-
-//                     <h1 className="text-[10px] font-extrabold tracking-[0.55px] text-[#171717] sm:text-[11px]">
-//                       GRAM PANCHAYAT RESOLUTION
-//                     </h1>
-
-//                     <p className="mt-0.5 text-[5px] font-semibold tracking-[0.3px] text-[#806a32] sm:text-[6px]">
-//                       Viksit Bharat Guarantee Rozgar and Ajeevika Mission Gramin
-//                     </p>
-
-//                   </div>
-
-//                   <div className="my-2 border-t border-[#d8c98f]" />
-
-
-//                   {/* BODY */}
-
-//                   <p className="text-[6.5px] leading-[1.7] text-[#252525] sm:text-[7px]">
-
-//                     This is to certify that the Gram Panchayat of
-
-//                     <span className="mx-1 inline-block min-w-[60px] border-b border-[#806a32]" />
-
-//                     , Block
-
-//                     <span className="mx-1 inline-block min-w-[55px] border-b border-[#806a32]" />
-
-//                     , District
-
-//                     <span className="mx-1 inline-block min-w-[60px] border-b border-[#806a32]" />
-
-//                     , has under the Viksit Bharat Guarantee for Rozgar and Ajeevika Mission Gramin initiative, duly deliberated upon and resolved in its Gram Sabha meeting to undertake a total of
-
-//                     <strong className="mx-1 font-extrabold text-[#075a91]">
-//                       {selectedWorks.length}
-//                     </strong>
-
-//                     works under the Viksit Bharat Guarantee for Rozgar and Ajeevika Mission Gramin Scheme for the financial year
-
-//                     <strong className="mx-1 font-extrabold text-[#075a91]">
-//                       2025–26
-//                     </strong>
-
-//                     . The said works span across water security, rural infrastructure, livelihood assets, and climate resilience domains and have been selected with due consideration of local needs, available resources, and community priorities as mandated under the VBG-RAM operational guidelines.
-
-//                   </p>
-
-
-//                   {/* STATS */}
-
-//                   <div className="mt-3 grid grid-cols-3 gap-2">
-
-//                     <div className="rounded-[4px] border border-[#e4d5a7] bg-[#fffaf0] px-2 py-1.5 text-center">
-
-//                       <p className="text-[5px] font-bold uppercase tracking-[0.4px] text-[#806a32]">
-//                         Total Works
-//                       </p>
-
-//                       <p className="mt-0.5 text-[10px] font-extrabold text-[#075a91]">
-//                         {selectedWorks.length}
-//                       </p>
-
-//                     </div>
-
-
-//                     <div className="rounded-[4px] border border-[#cce8da] bg-[#f3fbf7] px-2 py-1.5 text-center">
-
-//                       <p className="text-[5px] font-bold uppercase tracking-[0.4px] text-[#00875a]">
-//                         Geotagged
-//                       </p>
-
-//                       <p className="mt-0.5 text-[10px] font-extrabold text-[#00875a]">
-//                         {geotaggedCount}
-//                       </p>
-
-//                     </div>
-
-
-//                     <div className="rounded-[4px] border border-[#cbddea] bg-[#f4f9fc] px-2 py-1.5 text-center">
-
-//                       <p className="text-[5px] font-bold uppercase tracking-[0.4px] text-[#075a91]">
-//                         Status
-//                       </p>
-
-//                       <p className="mt-0.5 text-[8px] font-extrabold text-[#00875a]">
-//                         {allGeotagged ? "READY" : "REVIEW"}
-//                       </p>
-
-//                     </div>
-
-//                   </div>
-
-
-//                   {/* SIGNATURES */}
-
-//                   <div className="mt-3 grid grid-cols-3 gap-4">
-
-//                     <div className="text-center">
-
-//                       <div className="mb-1 border-t border-[#806a32]" />
-
-//                       <p className="text-[6px] font-bold text-[#171717] sm:text-[7px]">
-//                         Gram Pradhan / Sarpanch
-//                       </p>
-
-//                       <p className="mt-0.5 text-[4.5px] text-slate-500 sm:text-[5px]">
-//                         Gram Panchayat, with seal
-//                       </p>
-
-//                     </div>
-
-
-//                     <div className="text-center">
-
-//                       <div className="mb-1 border-t border-[#806a32]" />
-
-//                       <p className="text-[6px] font-bold text-[#171717] sm:text-[7px]">
-//                         Panchayat Secretary
-//                       </p>
-
-//                       <p className="mt-0.5 text-[4.5px] text-slate-500 sm:text-[5px]">
-//                         Authorized Signatory
-//                       </p>
-
-//                     </div>
-
-
-//                     <div className="text-center">
-
-//                       <div className="mb-1 border-t border-[#806a32]" />
-
-//                       <p className="text-[6px] font-bold text-[#171717] sm:text-[7px]">
-//                         Block Development Officer
-//                       </p>
-
-//                       <p className="mt-0.5 text-[4.5px] text-slate-500 sm:text-[5px]">
-//                         Countersignature & Seal
-//                       </p>
-
-//                     </div>
-
-//                   </div>
-
-
-//                   {/* PLACE + DATE */}
-
-//                   <div className="mt-2 flex items-end justify-between">
-
-//                     <div>
-
-//                       <p className="text-[6px] font-bold text-[#171717]">
-//                         Place & Date
-//                       </p>
-
-//                       <div className="mt-0.5 flex items-center gap-1">
-
-//                         <span className="inline-block min-w-[55px] border-b border-[#806a32]" />
-
-//                         <span className="text-[5px] text-slate-500">
-//                           , 18 August 2026
-//                         </span>
-
-//                       </div>
-
-//                     </div>
-
-
-//                     <div className="flex h-9 w-9 rotate-[-8deg] items-center justify-center rounded-full border border-[#c8b879] text-center text-[4px] font-bold uppercase leading-[1.2] text-[#b6a66c] opacity-70">
-
-//                       Gram
-//                       <br />
-//                       Panchayat
-//                       <br />
-//                       Seal
-
-//                     </div>
-
-//                   </div>
-
-//                 </div>
-
-//               </div>
-
-
-//               {/* GOLD BOTTOM */}
-
-//               <div className="h-[3px] bg-gradient-to-r from-[#806a32] via-[#d8c98f] to-[#806a32]" />
-
-//             </div>
-
-//           </div>
-
-//         </section>
-
-
-//         {/* ===================================================
-//             GAP ANALYSIS
-//         ==================================================== */}
-
-//         <section className="flex min-h-0 flex-1 flex-col bg-white">
-
-//           {/* TABLE HEADER */}
-
-//           <div className="flex min-h-10 shrink-0 items-center justify-between border-b border-[#d7e5ed] bg-gradient-to-r from-[#f8fbfd] via-white to-[#f5fafc] px-3">
-
-//             <div className="flex min-w-0 items-center gap-2">
-
-//               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] bg-[#edf7fc] text-[#075a91]">
-//                 <ClipboardCheck size={13} />
-//               </div>
-
-//               <div className="min-w-0">
-
-//                 <h3 className="truncate text-[10px] font-extrabold uppercase tracking-[0.5px] text-[#183b56]">
-//                   Gap Analysis
-//                 </h3>
-
-//                 <p className="truncate text-[6px] text-slate-400 sm:text-[7px]">
-//                   Work-wise verification before final approval
-//                 </p>
-
-//               </div>
-
-//             </div>
-
-
-//             <div className="flex shrink-0 items-center gap-1.5">
-
-//               <span className="hidden rounded-full border border-[#bce6d5] bg-[#effbf5] px-2 py-1 text-[6px] font-extrabold text-[#00875a] sm:block">
-//                 {geotaggedCount} GEOTAGGED
-//               </span>
-
-//               {notGeotaggedCount > 0 && (
-//                 <span className="hidden rounded-full border border-[#f5d6a7] bg-[#fff8ed] px-2 py-1 text-[6px] font-extrabold text-[#b45309] sm:block">
-//                   {notGeotaggedCount} PENDING
-//                 </span>
-//               )}
-
-//               <span className="rounded-full bg-[#edf7fc] px-2 py-1 text-[7px] font-extrabold text-[#075a91]">
-//                 {selectedWorks.length}
-//               </span>
-
-//             </div>
-
-//           </div>
-
-
-//           {/* TABLE BODY */}
-
-//           <div className="min-h-0 flex-1 overflow-auto">
-
-//             <table className="w-full min-w-[650px] border-collapse">
-
-//               <thead className="sticky top-0 z-20 bg-[#003b63] text-white shadow-[0_2px_5px_rgba(0,0,0,0.12)]">
-
-//                 <tr className="h-8">
-
-//                   <th className="w-[7%] border-r border-white/10 px-2 text-left text-[7px] font-extrabold uppercase tracking-[0.4px]">
-//                     #
-//                   </th>
-
-//                   <th className="w-[18%] border-r border-white/10 px-2 text-left text-[7px] font-extrabold uppercase tracking-[0.4px]">
-//                     UUID
-//                   </th>
-
-//                   <th className="w-[35%] border-r border-white/10 px-2 text-left text-[7px] font-extrabold uppercase tracking-[0.4px]">
-//                     WORK NAME
-//                   </th>
-
-//                   <th className="w-[17%] border-r border-white/10 px-2 text-left text-[7px] font-extrabold uppercase tracking-[0.4px]">
-//                     THEME
-//                   </th>
-
-//                   <th className="w-[10%] border-r border-white/10 px-2 text-center text-[7px] font-extrabold uppercase tracking-[0.4px]">
-//                     TYPE
-//                   </th>
-
-//                   <th className="w-[13%] px-2 text-center text-[7px] font-extrabold uppercase tracking-[0.4px]">
-//                     GEOTAGGED
-//                   </th>
-
-//                 </tr>
-
-//               </thead>
-
-
-//               <tbody>
-
-//                 {selectedWorks.length === 0 ? (
-
-//                   <tr>
-
-//                     <td
-//                       colSpan={6}
-//                       className="py-10 text-center"
-//                     >
-
-//                       <div className="mx-auto flex max-w-[260px] flex-col items-center">
-
-//                         <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d7e5ed] bg-[#f5f9fb] text-[#9aafbd]">
-//                           <MapPinned size={18} />
-//                         </div>
-
-//                         <p className="mt-2 text-[9px] font-extrabold text-slate-400">
-//                           No works available
-//                         </p>
-
-//                         <p className="mt-1 text-[7px] leading-relaxed text-slate-300">
-//                           Selected works from the previous steps will appear here for final gap analysis.
-//                         </p>
-
-//                       </div>
-
-//                     </td>
-
-//                   </tr>
-
-//                 ) : (
-
-//                   selectedWorks.map((work, index) => (
-
-//                     <tr
-//                       key={`gap-analysis-${work.id}`}
-//                       className="group h-9 border-b border-[#e6eef3] bg-white transition hover:bg-[#f5fafc]"
-//                     >
-
-//                       <td className="px-2">
-
-//                         <span className="font-mono text-[7px] font-bold text-slate-400 group-hover:text-[#075a91]">
-//                           {String(index + 1).padStart(2, "0")}
-//                         </span>
-
-//                       </td>
-
-
-//                       <td className="truncate px-2">
-
-//                         <span
-//                           title={work.id}
-//                           className="inline-flex max-w-full rounded-[4px] border border-[#d9e7ee] bg-[#f5f9fb] px-1.5 py-1 font-mono text-[6px] font-semibold text-[#526b7b]"
-//                         >
-//                           <span className="truncate">
-//                             {work.id}
-//                           </span>
-//                         </span>
-
-//                       </td>
-
-
-//                       <td
-//                         className="max-w-[250px] truncate px-2 text-[8px] font-bold text-[#263f52]"
-//                         title={work.workName}
-//                       >
-
-//                         <div className="flex min-w-0 items-center gap-1.5">
-
-//                           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#075a91] opacity-50 transition group-hover:opacity-100" />
-
-//                           <span className="truncate">
-//                             {work.workName}
-//                           </span>
-
-//                         </div>
-
-//                       </td>
-
-
-//                       <td
-//                         className="truncate px-2 text-[7px] font-bold"
-//                         title={work.theme}
-//                       >
-
-//                         <span
-//                           className={`inline-flex max-w-full items-center gap-1 rounded-full px-2 py-1 ${
-//                             work.theme === "Water Security"
-//                               ? "bg-[#fff7ed] text-[#c76a00]"
-//                               : work.theme === "Rural Infrastructure"
-//                                 ? "bg-[#f5f0ff] text-[#7c3aed]"
-//                                 : work.theme === "Livelihood Infrastructure"
-//                                   ? "bg-[#effbf5] text-[#00875a]"
-//                                   : "bg-[#eef8fc] text-[#0879b1]"
-//                           }`}
-//                         >
-
-//                           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-current" />
-
-//                           <span className="truncate">
-//                             {work.theme}
-//                           </span>
-
-//                         </span>
-
-//                       </td>
-
-
-//                       <td className="px-2 text-center">
-
-//                         <span
-//                           className={`inline-flex rounded-full border px-2 py-1 text-[6px] font-extrabold ${
-//                             work.type === "Repair"
-//                               ? "border-[#fecaca] bg-[#fff5f5] text-[#dc2626]"
-//                               : "border-[#bce6d5] bg-[#effbf5] text-[#00875a]"
-//                           }`}
-//                         >
-//                           {work.type}
-//                         </span>
-
-//                       </td>
-
-
-//                       <td className="px-2 text-center">
-
-//                         {work.geotagged ? (
-
-//                           <span className="inline-flex items-center gap-1 rounded-full border border-[#bce6d5] bg-[#effbf5] px-2 py-1 text-[6px] font-extrabold text-[#00875a]">
-
-//                             <CheckCircle2 size={8} />
-
-//                             YES
-
-//                           </span>
-
-//                         ) : (
-
-//                           <span className="inline-flex items-center gap-1 rounded-full border border-[#f5d6a7] bg-[#fff8ed] px-2 py-1 text-[6px] font-extrabold text-[#b45309]">
-
-//                             <span className="h-1.5 w-1.5 rounded-full bg-[#d97706]" />
-
-//                             PENDING
-
-//                           </span>
-
-//                         )}
-
-//                       </td>
-
-//                     </tr>
-
-//                   ))
-
-//                 )}
-
-//               </tbody>
-
-//             </table>
-
-//           </div>
-
-
-//           {/* TABLE FOOTER */}
-
-//           {selectedWorks.length > 0 && (
-
-//             <div className="flex min-h-8 shrink-0 items-center justify-between border-t border-[#e1ebf0] bg-[#f8fbfd] px-3">
-
-//               <div className="flex items-center gap-1.5">
-
-//                 <span
-//                   className={`h-1.5 w-1.5 rounded-full ${
-//                     allGeotagged
-//                       ? "bg-[#00875a]"
-//                       : "bg-[#d97706]"
-//                   }`}
-//                 />
-
-//                 <span className="text-[7px] font-semibold text-slate-500">
-
-//                   {allGeotagged
-//                     ? "All works are geotagged and ready for approval."
-//                     : `${notGeotaggedCount} work(s) require geotagging before approval.`}
-
-//                 </span>
-
-//               </div>
-
-//               <span className="hidden text-[7px] font-bold text-slate-400 sm:block">
-//                 {selectedWorks.length} TOTAL WORKS
-//               </span>
-
-//             </div>
-
-//           )}
-
-//         </section>
-
-//       </div>
-
-//     </section>
-//   );
-// }

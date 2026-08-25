@@ -1,4 +1,5 @@
 import ApprovalWorkspace from "@/components/approval/ApprovalWorkspace";
+import { getPermissibleWorks } from "@/lib/api/works";
 
 interface ApprovalPageProps {
   params: Promise<{
@@ -6,12 +7,10 @@ interface ApprovalPageProps {
   }>;
 }
 
-export default async function ApprovalPage({
-  params,
-}: ApprovalPageProps) {
+export default async function ApprovalPage({ params }: ApprovalPageProps) {
   const { proposalId } = await params;
 
-  return (
-    <ApprovalWorkspace proposalId={proposalId} />
-  );
+  const permissibleWorks = await getPermissibleWorks();
+
+  return <ApprovalWorkspace proposalId={proposalId} selectedWorks={permissibleWorks} />;
 }

@@ -699,37 +699,6 @@ export default function RequirementTable({
                                     </td>
 
                                     <td className="px-2 text-center">
-                                      {/* <button
-                                        type="button"
-                                        disabled={
-                                          isDisabled
-                                        }
-                                        onClick={(
-                                          event
-                                        ) => {
-                                          event.stopPropagation();
-                                          onAdd(work);
-                                        }}
-                                        title={
-                                          isDisabled
-                                            ? "Already selected"
-                                            : "Add work"
-                                        }
-                                        className={`mx-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border transition-all active:scale-90 ${isDisabled ? "cursor-not-allowed border-slate-200 bg-slate-50 text-slate-300" : "border-[#9ed1b8] bg-[#f0fbf5] text-[#00875a] hover:border-[#00875a] hover:bg-[#00875a] hover:text-white"}`}
-                                      >
-                                        {isSelected &&
-                                        activeTab ===
-                                          "permissible" ? (
-                                          <Check
-                                            size={12}
-                                          />
-                                        ) : (
-                                          <Plus
-                                            size={13}
-                                          />
-                                        )}
-                                      </button> */}
-
                                       <button
                                         type="button"
                                         disabled={isDisabled}

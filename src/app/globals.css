@@ -84,3 +84,114 @@ textarea {
   border: 3px solid #ffffff;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
+
+.approval-print-only {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #approval-print-area,
+  #approval-print-area * {
+    visibility: visible !important;
+  }
+
+  #approval-print-area {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  #approval-print-area > section {
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  #approval-print-area > section > div {
+    overflow: visible !important;
+  }
+
+  #approval-print-area .approval-print-table {
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #approval-print-area table {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed !important;
+  }
+
+  #approval-print-area thead {
+    display: table-header-group !important;
+  }
+
+  #approval-print-area tbody {
+    display: table-row-group !important;
+  }
+
+  #approval-print-area tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  #approval-print-area th,
+  #approval-print-area td {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  #approval-print-area .overflow-auto,
+  #approval-print-area .overflow-hidden,
+  #approval-print-area .overflow-x-auto,
+  #approval-print-area .overflow-y-auto {
+    overflow: visible !important;
+  }
+
+  #approval-print-area button {
+    display: none !important;
+  }
+
+  #approval-print-area [role="button"] {
+    display: none !important;
+  }
+
+  #approval-print-area {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

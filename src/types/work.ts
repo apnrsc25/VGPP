@@ -94,4 +94,5 @@ export interface Work {
   visibleOnMap?: boolean;
   functionality?: Functionality;
   localWorkName?: string;
+  geotagged: boolean;
 }
