@@ -2,9 +2,10 @@
 
 import ApprovalMap from "@/components/approval/ApprovalMap";
 import ApprovalRightPanel from "@/components/approval/ApprovalRightPanel";
-import { CheckCircle2, ChevronLeft, ChevronRight, Printer } from "lucide-react";
+import { Check, CheckCircle2, ChevronLeft, ChevronRight, Plus, Printer } from "lucide-react";
 import { useMemo, useState } from "react";
 import { FINANCIAL_YEARS } from "@/constants/financialYear";
+import { Work } from "@/types/work";
 
 export interface SelectedWork {
   id: string;
@@ -84,6 +85,30 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
     });
   };
 
+  const handleAdd = (workId: any) => {
+    setSelectedWorkIds((current) => {
+      const next = new Set(current);
+
+      if (next.has(workId)) {
+        next.delete(workId);
+      } else {
+        next.add(workId);
+      }
+
+      return next;
+    });
+  };
+
+  const handleRemove = (id: string) => {
+    setSelectedWorkIds((current) => {
+      const next = new Set(current);
+
+      next.delete(id);
+
+      return next;
+    });
+  };
+
   const handlePrint = () => {
     if (finalWorks.length === 0) {
       return;
@@ -119,29 +144,13 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
               <div className="min-w-0">
 
-                <h2 className="text-[11px] font-extrabold uppercase tracking-[0.5px] text-[#183b56]">
+                <h2 className="text-[12px] font-extrabold uppercase tracking-[0.5px] text-[#183b56]">
                   Permissible Works
                 </h2>
 
-                <div className="mt-1 flex items-center gap-2">
-
-                  <span className="text-[7px] font-semibold text-slate-400">
-                    Financial Year
-                  </span>
-
-                  <select value={selectedFinancialYear} onChange={(event) => setSelectedFinancialYear(event.target.value)} className="h-6 cursor-pointer rounded-[4px] border border-[#cbdde8] bg-white px-2 text-[7px] font-bold text-[#075a91] outline-none">
-                    {FINANCIAL_YEARS.map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-
-                </div>
-
               </div>
 
-              <span className="shrink-0 rounded-full bg-[#edf7fc] px-2.5 py-1 text-[7px] font-extrabold text-[#075a91]">
+              <span className="shrink-0 rounded-full bg-[#edf7fc] px-2.5 py-1 text-[8px] font-extrabold text-[#075a91]">
                 {displayedWorks.length} WORKS
               </span>
 
@@ -158,34 +167,38 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
                   <tr className="h-9">
 
-                    <th className="w-10 px-2 text-center text-[7px]">
+                    {/* <th className="w-10 px-2 text-center text-[8px]">
 
                       <input type="checkbox" checked={allDisplayedSelected} onChange={toggleSelectAll} disabled={displayedWorks.length === 0} className="h-3 w-3 cursor-pointer accent-[#075a91]" />
 
-                    </th>
+                    </th> */}
 
-                    <th className="px-2 text-left text-[7px]">
+                    <th className="px-2 text-left text-[9px]">
                       #
                     </th>
 
-                    <th className="px-2 text-left text-[7px]">
+                    <th className="px-2 text-left text-[9px]">
                       FINANCIAL YEAR
                     </th>
 
-                    <th className="px-2 text-left text-[7px]">
+                    <th className="px-2 text-left text-[9px]">
                       WORK NAME
                     </th>
 
-                    <th className="px-2 text-left text-[7px]">
+                    <th className="px-2 text-left text-[9px]">
                       THEME
                     </th>
 
-                    <th className="px-2 text-center text-[7px]">
+                    <th className="px-2 text-center text-[9px]">
                       TYPE
                     </th>
 
-                    <th className="px-2 text-center text-[7px]">
+                    <th className="px-2 text-center text-[9px]">
                       GEOTAGGED
+                    </th>
+
+                    <th className="w-[8%] px-2 text-center text-[9px]">
+                      ADD
                     </th>
 
                   </tr>
@@ -197,69 +210,96 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
                   {displayedWorks.length === 0 ? (
 
                     <tr>
-                      <td colSpan={7} className="py-16 text-center text-[9px] text-slate-400">
+                      <td colSpan={7} className="py-16 text-center text-[10px] text-slate-400">
                         No permissible works available for {selectedFinancialYear}.
                       </td>
                     </tr>
 
                   ) : (
 
-                    displayedWorks.map((work, index) => (
+                    displayedWorks.map((work, index) => {
 
-                      <tr key={work.id} className="h-10 border-b border-[#e6eef3] hover:bg-[#f5fafc]">
+                      const isSelected =
+                        selectedWorkIds.has(
+                          work.id
+                        );
 
-                        <td className="px-2 text-center">
+                      return (
+
+                        <tr key={work.id} className="h-10 border-b border-[#e6eef3] hover:bg-[#f5fafc]">
+
+                          {/* <td className="px-2 text-center">
 
                           <input type="checkbox" checked={selectedWorkIds.has(work.id)} onChange={() => toggleWorkSelection(work.id)} className="h-3 w-3 cursor-pointer accent-[#075a91]" />
 
-                        </td>
+                        </td> */}
 
-                        <td className="px-2 text-[7px] text-slate-400">
-                          {String(index + 1).padStart(2, "0")}
-                        </td>
+                          <td className="px-2 text-[8px] text-slate-400">
+                            {String(index + 1).padStart(2, "0")}
+                          </td>
 
-                        <td className="px-2">
+                          <td className="px-2">
 
-                          <span className="rounded-full bg-[#f1f8fc] px-2 py-1 text-[6px] font-bold text-[#075a91]">
-                            {work.financialYear ?? selectedFinancialYear}
-                          </span>
-
-                        </td>
-
-                        <td className="max-w-[300px] truncate px-2 text-[8px] font-bold text-[#263f52]" title={work.workName}>
-                          {work.workName}
-                        </td>
-
-                        <td className="px-2 text-[7px] font-semibold text-[#36566b]">
-                          {work.theme}
-                        </td>
-
-                        <td className="px-2 text-center text-[7px]">
-                          {work.type}
-                        </td>
-
-                        <td className="px-2 text-center">
-
-                          {work.geotagged ? (
-
-                            <span className="inline-flex items-center gap-1 rounded-full bg-[#effbf5] px-2 py-1 text-[6px] font-extrabold text-[#00875a]">
-                              <CheckCircle2 size={8} />
-                              YES
+                            <span className="rounded-full bg-[#f1f8fc] px-2 py-1 text-[8px] font-bold text-[#075a91]">
+                              {work.financialYear ?? selectedFinancialYear}
                             </span>
 
-                          ) : (
+                          </td>
 
-                            <span className="rounded-full bg-[#fff8ed] px-2 py-1 text-[6px] font-extrabold text-[#b45309]">
-                              PENDING
-                            </span>
+                          <td className="max-w-[300px] truncate px-2 text-[8px] font-bold text-[#263f52]" title={work.workName}>
+                            {work.workName}
+                          </td>
 
-                          )}
+                          <td className="px-2 text-[8px] font-semibold text-[#36566b]">
+                            {work.theme}
+                          </td>
 
-                        </td>
+                          <td className="px-2 text-center text-[8px]">
+                            {work.type}
+                          </td>
 
-                      </tr>
+                          <td className="px-2 text-center">
 
-                    ))
+                            {work.geotagged ? (
+
+                              <span className="inline-flex items-center gap-1 rounded-full bg-[#effbf5] px-2 py-1 text-[8px] font-extrabold text-[#00875a]">
+                                <CheckCircle2 size={8} />
+                                YES
+                              </span>
+
+                            ) : (
+
+                              <span className="rounded-full bg-[#fff8ed] px-2 py-1 text-[8px] font-extrabold text-[#b45309]">
+                                PENDING
+                              </span>
+
+                            )}
+
+                          </td>
+
+                          <td className="px-2 text-center">
+                            <button
+                              type="button"
+                              disabled={isSelected}
+                              onClick={() => handleAdd(work.id)}
+                              title={isSelected ? "Already Selected" : "Select work"}
+                              className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full border transition-all active:scale-90 ${isSelected
+                                ? "cursor-not-allowed border-slate-200 bg-slate-50 text-slate-300"
+                                : "cursor-pointer border-[#9ed1b8] bg-[#f0fbf5] text-[#00875a] hover:border-[#00875a] hover:bg-[#00875a] hover:text-white"
+                                }`}
+                            >
+                              {isSelected ? (
+                                <Check size={12} />
+                              ) : (
+                                <Plus size={13} />
+                              )}
+                            </button>
+                          </td>
+
+                        </tr>
+
+                      )
+                    })
 
                   )}
 
@@ -286,17 +326,17 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
               <div>
 
-                <h2 className="text-[11px] font-extrabold uppercase tracking-[0.5px] text-[#183b56]">
+                <h2 className="text-[12px] font-extrabold uppercase tracking-[0.5px] text-[#183b56]">
                   Final Works
                 </h2>
 
-                <p className="text-[7px] text-slate-400">
+                <p className="text-[9px] text-slate-400">
                   Selected works for approval
                 </p>
 
               </div>
 
-              <span className="rounded-full bg-[#effbf5] px-2.5 py-1 text-[7px] font-extrabold text-[#00875a]">
+              <span className="rounded-full bg-[#effbf5] px-2.5 py-1 text-[9px] font-extrabold text-[#00875a]">
                 {finalWorks.length} FINAL
               </span>
 
@@ -312,28 +352,31 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
                 <thead className="sticky top-0 z-20 bg-[#003b63] text-white">
 
                   <tr className="h-9">
+                    <th className="w-[7%] px-2 text-center text-[9px]">
+                      REMOVE
+                    </th>
 
-                    <th className="px-2 text-left text-[7px]">
+                    <th className="px-2 text-left text-[9px]">
                       #
                     </th>
 
-                    <th className="px-2 text-left text-[7px]">
+                    <th className="px-2 text-left text-[9px]">
                       FINANCIAL YEAR
                     </th>
 
-                    <th className="px-2 text-left text-[7px]">
+                    <th className="px-2 text-left text-[9px]">
                       WORK NAME
                     </th>
 
-                    <th className="px-2 text-left text-[7px]">
+                    <th className="px-2 text-left text-[9px]">
                       THEME
                     </th>
 
-                    <th className="px-2 text-center text-[7px]">
+                    <th className="px-2 text-center text-[9px]">
                       TYPE
                     </th>
 
-                    <th className="px-2 text-center text-[7px]">
+                    <th className="px-2 text-center text-[9px]">
                       STATUS
                     </th>
 
@@ -347,7 +390,7 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
                     <tr>
 
-                      <td colSpan={6} className="py-16 text-center text-[9px] text-slate-400">
+                      <td colSpan={7} className="py-16 text-center text-[10px] text-slate-400">
                         Select permissible works from the left table.
                       </td>
 
@@ -359,13 +402,30 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
                       <tr key={`final-${work.id}`} className="h-10 border-b border-[#e6eef3] hover:bg-[#f5fafc]">
 
-                        <td className="px-2 text-[7px] text-slate-400">
+                        <td className="px-2 text-center">
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemove(
+                                work.id
+                              )
+                            }
+                            title="Remove work"
+                            className="mx-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#fecaca] bg-[#fff5f5] text-[13px] font-bold text-[#dc2626] transition hover:bg-[#dc2626] hover:text-white active:scale-90"
+                          >
+                            −
+                          </button>
+
+                        </td>
+
+                        <td className="px-2 text-[8px] text-slate-400">
                           {String(index + 1).padStart(2, "0")}
                         </td>
 
                         <td className="px-2">
 
-                          <span className="rounded-full bg-[#f1f8fc] px-2 py-1 text-[6px] font-bold text-[#075a91]">
+                          <span className="rounded-full bg-[#f1f8fc] px-2 py-1 text-[8px] font-bold text-[#075a91]">
                             {work.financialYear ?? selectedFinancialYear}
                           </span>
 
@@ -375,11 +435,11 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
                           {work.workName}
                         </td>
 
-                        <td className="px-2 text-[7px] font-semibold text-[#36566b]">
+                        <td className="px-2 text-[8px] font-semibold text-[#36566b]">
                           {work.theme}
                         </td>
 
-                        <td className="px-2 text-center text-[7px]">
+                        <td className="px-2 text-center text-[8px]">
                           {work.type}
                         </td>
 
@@ -387,13 +447,13 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
                           {work.geotagged ? (
 
-                            <span className="rounded-full bg-[#effbf5] px-2 py-1 text-[6px] font-extrabold text-[#00875a]">
+                            <span className="rounded-full bg-[#effbf5] px-2 py-1 text-[8px] font-extrabold text-[#00875a]">
                               READY
                             </span>
 
                           ) : (
 
-                            <span className="rounded-full bg-[#fff8ed] px-2 py-1 text-[6px] font-extrabold text-[#b45309]">
+                            <span className="rounded-full bg-[#fff8ed] px-2 py-1 text-[8px] font-extrabold text-[#b45309]">
                               PENDING
                             </span>
 
@@ -462,7 +522,7 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
         {/* LEFT DRAWER BUTTON */}
 
-        <button type="button" onClick={() => setLeftDrawerOpen((value) => !value)} className={`absolute left-0 top-1/2 z-[1100] flex h-14 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-r-[6px] bg-[#075a91] text-white shadow-lg transition-all duration-300 hover:bg-[#f58220] ${leftDrawerOpen ? "translate-x-[calc(50vw-24px)]" : "translate-x-0"}`} aria-label="Toggle map drawer">
+        <button type="button" onClick={() => setLeftDrawerOpen((value) => !value)} className={`absolute left-0 top-1/2 z-[1100] flex h-16 w-4 -translate-y-1/2 cursor-pointer items-center justify-center rounded-r-[6px] bg-[#075a91] text-white shadow-lg transition-all duration-300 hover:bg-[#f58220] ${leftDrawerOpen ? "translate-x-[calc(50vw-24px)]" : "translate-x-0"}`} aria-label="Toggle map drawer">
 
           {leftDrawerOpen ? <ChevronLeft size={15} /> : <ChevronRight size={15} />}
 
@@ -471,7 +531,7 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
         {/* RIGHT DRAWER BUTTON */}
 
-        <button type="button" onClick={() => setRightDrawerOpen((value) => !value)} className={`absolute right-0 top-1/2 z-[1100] flex h-14 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-l-[6px] bg-[#075a91] text-white shadow-lg transition-all duration-300 hover:bg-[#f58220] ${rightDrawerOpen ? "-translate-x-[calc(50vw-24px)]" : "translate-x-0"}`} aria-label="Toggle certificate drawer">
+        <button type="button" onClick={() => setRightDrawerOpen((value) => !value)} className={`absolute right-0 top-1/2 z-[1100] flex h-16 w-4 -translate-y-1/2 cursor-pointer items-center justify-center rounded-l-[6px] bg-[#075a91] text-white shadow-lg transition-all duration-300 hover:bg-[#f58220] ${rightDrawerOpen ? "-translate-x-[calc(50vw-24px)]" : "translate-x-0"}`} aria-label="Toggle certificate drawer">
 
           {rightDrawerOpen ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
 
