@@ -41,6 +41,51 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
   const [selectedFinancialYear, setSelectedFinancialYear] = useState(defaultFinancialYear);
   const [selectedWorkIds, setSelectedWorkIds] = useState<Set<string>>(new Set());
 
+  const [draggedWorkId, setDraggedWorkId] = useState(null);
+
+  const handleDragStart = (e:any, workId:any) => {
+    setDraggedWorkId(workId);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", String(workId));
+  };
+
+  const handleDragOver = (e:any) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const handleDrop = (e:any, targetWorkId:any) => {
+    e.preventDefault();
+
+    const draggedId = Number(e.dataTransfer.getData("text/plain"));
+
+    if (!draggedId || draggedId === targetWorkId) {
+      setDraggedWorkId(null);
+      return;
+    }
+
+    setFinalWorks((prevWorks) => {
+      const works = [...prevWorks];
+      const draggedIndex = works.findIndex((work) => work.id === draggedId);
+      const targetIndex = works.findIndex((work) => work.id === targetWorkId);
+
+      if (draggedIndex === -1 || targetIndex === -1) {
+        return prevWorks;
+      }
+
+      const [draggedWork] = works.splice(draggedIndex, 1);
+      works.splice(targetIndex, 0, draggedWork);
+
+      return works;
+    });
+
+    setDraggedWorkId(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedWorkId(null);
+  };
+
   const toggleWorkSelection = (workId: string) => {
     setSelectedWorkIds((current) => {
       const next = new Set(current);
@@ -144,9 +189,17 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
               <div className="min-w-0">
 
+                {/* <h2 className="text-[12px] font-extrabold uppercase tracking-[0.5px] text-[#183b56]">
+                  Perspective VGPP Works <span className="text-[9px]">{`(Shelf of Works)`}</span> 
+                </h2> */}
+
                 <h2 className="text-[12px] font-extrabold uppercase tracking-[0.5px] text-[#183b56]">
-                  Permissible Works
+                  Perspective VGPP Works
                 </h2>
+
+                <p className="text-[9px] text-slate-400">
+                  Shelf of Works
+                </p>
 
               </div>
 
@@ -327,17 +380,17 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
               <div>
 
                 <h2 className="text-[12px] font-extrabold uppercase tracking-[0.5px] text-[#183b56]">
-                  Final Works
+                  AAP 2027-2028
                 </h2>
 
                 <p className="text-[9px] text-slate-400">
-                  Selected works for approval
+                  Annual Action Plan
                 </p>
 
               </div>
 
               <span className="rounded-full bg-[#effbf5] px-2.5 py-1 text-[9px] font-extrabold text-[#00875a]">
-                {finalWorks.length} FINAL
+                {finalWorks.length} / {displayedWorks.length}
               </span>
 
             </div>
@@ -353,11 +406,15 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
                   <tr className="h-9">
                     <th className="w-[7%] px-2 text-center text-[9px]">
+                      Drag
+                    </th>
+
+                    <th className="w-[7%] px-2 text-center text-[9px]">
                       REMOVE
                     </th>
 
-                    <th className="px-2 text-left text-[9px]">
-                      #
+                    <th className="w-[7%] px-2 text-center text-[9px]">
+                     Priority
                     </th>
 
                     <th className="px-2 text-left text-[9px]">
@@ -398,72 +455,138 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
                   ) : (
 
+                    // finalWorks.map((work, index) => (
+
+                    //   <tr key={`final-${work.id}`} className="h-10 border-b border-[#e6eef3] hover:bg-[#f5fafc]">
+
+                    //     <td className="px-2 text-center">
+
+                    //       <button
+                    //         type="button"
+                    //         onClick={() =>
+                    //           handleRemove(
+                    //             work.id
+                    //           )
+                    //         }
+                    //         title="Remove work"
+                    //         className="mx-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#fecaca] bg-[#fff5f5] text-[13px] font-bold text-[#dc2626] transition hover:bg-[#dc2626] hover:text-white active:scale-90"
+                    //       >
+                    //         −
+                    //       </button>
+
+                    //     </td>
+
+                    //     <td className="px-2 text-[8px] text-slate-400">
+                    //       {String(index + 1).padStart(2, "0")}
+                    //     </td>
+
+                    //     <td className="px-2">
+
+                    //       <span className="rounded-full bg-[#f1f8fc] px-2 py-1 text-[8px] font-bold text-[#075a91]">
+                    //         {work.financialYear ?? selectedFinancialYear}
+                    //       </span>
+
+                    //     </td>
+
+                    //     <td className="max-w-[250px] truncate px-2 text-[8px] font-bold text-[#263f52]" title={work.workName}>
+                    //       {work.workName}
+                    //     </td>
+
+                    //     <td className="px-2 text-[8px] font-semibold text-[#36566b]">
+                    //       {work.theme}
+                    //     </td>
+
+                    //     <td className="px-2 text-center text-[8px]">
+                    //       {work.type}
+                    //     </td>
+
+                    //     <td className="px-2 text-center">
+
+                    //       {work.geotagged ? (
+
+                    //         <span className="rounded-full bg-[#effbf5] px-2 py-1 text-[8px] font-extrabold text-[#00875a]">
+                    //           READY
+                    //         </span>
+
+                    //       ) : (
+
+                    //         <span className="rounded-full bg-[#fff8ed] px-2 py-1 text-[8px] font-extrabold text-[#b45309]">
+                    //           PENDING
+                    //         </span>
+
+                    //       )}
+
+                    //     </td>
+
+                    //   </tr>
+
+                    // ))
+
+
                     finalWorks.map((work, index) => (
+                      <tr key={`final-${work.id}`} draggable onDragStart={(e) => handleDragStart(e, work.id)} onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, work.id)} onDragEnd={handleDragEnd} className={`h-10 border-b border-[#e6eef3] transition-all ${draggedWorkId === work.id ? "bg-[#fff4e8] opacity-60" : "hover:bg-[#f5fafc]"}`}>
 
-                      <tr key={`final-${work.id}`} className="h-10 border-b border-[#e6eef3] hover:bg-[#f5fafc]">
+                        {/* Drag Handle */}
+                        <td className="w-8 px-1 text-center">
+                          <span title="Drag to change priority" className="inline-flex cursor-grab touch-none select-none flex-col items-center justify-center text-[#94a3b8] transition hover:text-[#075a91] active:cursor-grabbing">
+                            <span className="text-[11px] leading-[5px]">⠿</span>
+                            <span className="text-[11px] leading-[5px]">⠿</span>
+                            <span className="text-[11px] leading-[5px]">⠿</span>
+                          </span>
+                        </td>
 
+                        {/* Remove */}
                         <td className="px-2 text-center">
-
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleRemove(
-                                work.id
-                              )
-                            }
-                            title="Remove work"
-                            className="mx-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#fecaca] bg-[#fff5f5] text-[13px] font-bold text-[#dc2626] transition hover:bg-[#dc2626] hover:text-white active:scale-90"
-                          >
+                          <button type="button" onClick={() => handleRemove(work.id)} title="Remove work" className="mx-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#fecaca] bg-[#fff5f5] text-[13px] font-bold text-[#dc2626] transition hover:bg-[#dc2626] hover:text-white active:scale-90">
                             −
                           </button>
-
                         </td>
 
-                        <td className="px-2 text-[8px] text-slate-400">
-                          {String(index + 1).padStart(2, "0")}
+                        {/* Priority */}
+                        <td className="px-2 text-center">
+                          <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-md border border-[#f58220] bg-[#fff4e8] px-2 text-[8px] font-extrabold text-[#d65f00]">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
                         </td>
 
+                        {/* Financial Year */}
                         <td className="px-2">
-
                           <span className="rounded-full bg-[#f1f8fc] px-2 py-1 text-[8px] font-bold text-[#075a91]">
                             {work.financialYear ?? selectedFinancialYear}
                           </span>
-
                         </td>
 
+                        {/* Work Name */}
                         <td className="max-w-[250px] truncate px-2 text-[8px] font-bold text-[#263f52]" title={work.workName}>
                           {work.workName}
                         </td>
 
+                        {/* Theme */}
                         <td className="px-2 text-[8px] font-semibold text-[#36566b]">
                           {work.theme}
                         </td>
 
+                        {/* Type */}
                         <td className="px-2 text-center text-[8px]">
                           {work.type}
                         </td>
 
+                        {/* Status */}
                         <td className="px-2 text-center">
-
                           {work.geotagged ? (
-
                             <span className="rounded-full bg-[#effbf5] px-2 py-1 text-[8px] font-extrabold text-[#00875a]">
                               READY
                             </span>
-
                           ) : (
-
                             <span className="rounded-full bg-[#fff8ed] px-2 py-1 text-[8px] font-extrabold text-[#b45309]">
                               PENDING
                             </span>
-
                           )}
-
                         </td>
 
                       </tr>
-
                     ))
+
 
                   )}
 
@@ -499,7 +622,7 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
 
             <div className="min-h-0 flex-1 overflow-auto">
 
-              <ApprovalRightPanel proposalId={proposalId} finalWorks={finalWorks} />
+              <ApprovalRightPanel proposalId={proposalId} finalWorks={finalWorks} displayedWorks={displayedWorks} />
 
             </div>
 
@@ -576,6 +699,7 @@ export default function ApprovalWorkspace({ proposalId, selectedWorks = [] }: Ap
         <ApprovalRightPanel
           proposalId={proposalId}
           finalWorks={finalWorks}
+          displayedWorks={displayedWorks}
         />
       </div>
 

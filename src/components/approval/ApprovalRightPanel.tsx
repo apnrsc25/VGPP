@@ -22,11 +22,13 @@ interface SelectedWork {
 
 interface ApprovalRightPanelProps {
     finalWorks: SelectedWork[];
+    displayedWorks: SelectedWork[];
     proposalId: string;
 }
 
 export default function ApprovalRightPanel({
     finalWorks,
+    displayedWorks,
     proposalId,
 }: ApprovalRightPanelProps) {
 
@@ -211,7 +213,7 @@ export default function ApprovalRightPanel({
                                         its Gram Sabha meeting to undertake a total of
 
                                         <strong className="mx-1 font-extrabold text-[#075a91]">
-                                            {finalWorks.length}
+                                            {finalWorks.length} of {displayedWorks.length}
                                         </strong>
 
                                         works under the Viksit Bharat Guarantee for Rozgar and Ajeevika

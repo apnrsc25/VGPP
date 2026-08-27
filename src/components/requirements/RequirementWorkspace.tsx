@@ -859,7 +859,7 @@ export default function RequirementsWorkspace({
                         }}
                     />
 
-                    <div className="grid h-16 shrink-0 grid-cols-4 border-b border-[#dce7ed] bg-white">
+                    {/* <div className="grid h-16 shrink-0 grid-cols-4 border-b border-[#dce7ed] bg-white">
 
                         {categoryCounts.map(
                             (category) => {
@@ -901,6 +901,22 @@ export default function RequirementsWorkspace({
                             }
                         )}
 
+                    </div> */}
+
+                    <div className="grid h-[72px] shrink-0 grid-cols-4 gap-2 border-b border-[#dce7ed] bg-[#f8fafc] p-2">
+                        {categoryCounts.map((category) => {
+                            const active = activeCategory === category.key;
+
+                            return (
+                                <button key={category.key} type="button" onClick={() => setActiveCategory(active ? null : category.key)} aria-pressed={active} className={`group relative flex cursor-pointer flex-col items-center justify-center rounded-lg border transition-all duration-200 outline-none ${active ? "border-[#f58220] bg-white shadow-md" : "border-transparent bg-[#eef8f3] shadow-[0_2px_6px_rgba(0,63,99,0.20)] hover:border-[#b9d8e6] hover:bg-[#f0f8fc] hover:shadow-sm"}`}>
+                                    <span className={`text-[17px] font-extrabold transition-transform duration-200 sm:text-[19px] ${category.color} ${active ? "scale-105" : "group-hover:scale-105"}`}>{category.count}</span>
+
+                                    <span className={`mt-0.5 text-[8px] font-bold uppercase tracking-[0.6px] sm:text-[9px] ${active ? "text-[#173f56]" : "text-[#36566b]"}`}>{category.label}</span>
+
+                                    <span className={`absolute right-2 top-2 text-[10px] transition-all duration-200 ${active ? "text-[#f58220] opacity-100" : "text-[#7b9aaa] opacity-0 group-hover:opacity-100"}`}>→</span>
+                                </button>
+                            );
+                        })}
                     </div>
 
                     <RequirementTable
