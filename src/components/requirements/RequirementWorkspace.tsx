@@ -859,50 +859,6 @@ export default function RequirementsWorkspace({
                         }}
                     />
 
-                    {/* <div className="grid h-16 shrink-0 grid-cols-4 border-b border-[#dce7ed] bg-white">
-
-                        {categoryCounts.map(
-                            (category) => {
-                                const active =
-                                    activeCategory ===
-                                    category.key;
-
-                                return (
-                                    <button
-                                        key={category.key}
-                                        type="button"
-                                        onClick={() =>
-                                            setActiveCategory(
-                                                active
-                                                    ? null
-                                                    : category.key
-                                            )
-                                        }
-                                        className={`group flex cursor-pointer flex-col items-center justify-center border-r border-[#e2ebf0] transition last:border-r-0 ${active
-                                            ? "bg-[#eef7fb]"
-                                            : "bg-white hover:bg-[#f7fbfd]"
-                                            }`}
-                                    >
-                                        <span
-                                            className={`text-[17px] font-extrabold transition-transform group-hover:scale-105 sm:text-[19px] ${category.color}`}
-                                        >
-                                            {category.count}
-                                        </span>
-
-                                        <span className="mt-0.5 text-[7px] font-bold tracking-[0.5px] text-[#36566b] sm:text-[8px]">
-                                            {category.label}
-                                        </span>
-
-                                        {active && (
-                                            <span className="mt-1 h-0.5 w-5 rounded-full bg-[#f58220]" />
-                                        )}
-                                    </button>
-                                );
-                            }
-                        )}
-
-                    </div> */}
-
                     <div className="grid h-[72px] shrink-0 grid-cols-4 gap-2 border-b border-[#dce7ed] bg-[#f8fafc] p-2">
                         {categoryCounts.map((category) => {
                             const active = activeCategory === category.key;
@@ -912,8 +868,6 @@ export default function RequirementsWorkspace({
                                     <span className={`text-[17px] font-extrabold transition-transform duration-200 sm:text-[19px] ${category.color} ${active ? "scale-105" : "group-hover:scale-105"}`}>{category.count}</span>
 
                                     <span className={`mt-0.5 text-[8px] font-bold uppercase tracking-[0.6px] sm:text-[9px] ${active ? "text-[#173f56]" : "text-[#36566b]"}`}>{category.label}</span>
-
-                                    <span className={`absolute right-2 top-2 text-[10px] transition-all duration-200 ${active ? "text-[#f58220] opacity-100" : "text-[#7b9aaa] opacity-0 group-hover:opacity-100"}`}>→</span>
                                 </button>
                             );
                         })}
@@ -976,7 +930,7 @@ export default function RequirementsWorkspace({
 
                     {/* INFO */}
 
-                    <div className="mx-3 mt-3 shrink-0 rounded-[6px] border border-dashed border-[#bcd5e2] bg-[#f5fafc] px-3 py-2.5 text-center">
+                    <div className="mx-2 mt-2 shrink-0 rounded-[6px] border border-dashed border-[#bcd5e2] bg-[#f5fafc] px-2 py-1.5 text-center">
 
                         <div className="text-[9px] font-semibold text-[#36566b] sm:text-[10px]">
                             Works selected from the catalogue
@@ -990,7 +944,7 @@ export default function RequirementsWorkspace({
 
                     {/* SELECTED CATEGORY COUNTS */}
 
-                    <div className="mx-3 mt-3 grid h-16 shrink-0 grid-cols-4 overflow-hidden rounded-[6px] border border-[#dce7ed]">
+                    <div className="m-2 grid h-16 shrink-0 grid-cols-4 overflow-hidden rounded-[6px] border border-[#dce7ed] shadow-[0_2px_6px_rgba(0,63,99,0.20)]">
 
                         {categories.map(
                             (category) => {
@@ -1004,7 +958,7 @@ export default function RequirementsWorkspace({
                                 return (
                                     <div
                                         key={category.key}
-                                        className="flex flex-col items-center justify-center border-r border-[#e2ebf0] bg-white last:border-r-0"
+                                        className="flex flex-col items-center justify-center border-r-2 border-[#e2ebf0] last:border-r-0 bg-[#eef8f3]"
                                     >
                                         <span
                                             className={`text-[17px] font-extrabold sm:text-[19px] ${category.color}`}

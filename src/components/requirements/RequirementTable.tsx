@@ -411,37 +411,37 @@ export default function RequirementTable({
     <div className="min-h-0 flex-1 overflow-y-auto overflow-x-auto">
       <table className="w-full min-w-[760px] table-fixed border-collapse text-[10px] sm:text-[11px]">
         <thead className="sticky top-0 z-20 bg-[#003b63] text-white shadow-[0_2px_6px_rgba(0,0,0,0.12)]">
-          <tr className="h-9 text-[8px] uppercase tracking-[0.5px] sm:h-10 sm:text-[9px]">
+          <tr className="h-8 text-[8px] uppercase tracking-[0.5px] sm:h-9.5 sm:text-[9px]">
             <th className="w-[18%] px-2 text-left">
-              <button type="button" onClick={() => handleSort("theme")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-bold transition hover:text-[#f58220]">
+              <button type="button" onClick={() => handleSort("theme")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-semibold transition hover:text-[#f58220]">
                 <span>THEME</span>
                 <SortIcon column="theme" />
               </button>
             </th>
 
             <th className="w-[20%] px-2 text-left">
-              <button type="button" onClick={() => handleSort("subTheme")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-bold transition hover:text-[#f58220]">
+              <button type="button" onClick={() => handleSort("subTheme")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-semibold transition hover:text-[#f58220]">
                 <span>SUB THEME</span>
                 <SortIcon column="subTheme" />
               </button>
             </th>
 
             <th className="w-[35%] px-2 text-left">
-              <button type="button" onClick={() => handleSort("workName")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-bold transition hover:text-[#f58220]">
+              <button type="button" onClick={() => handleSort("workName")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-semibold transition hover:text-[#f58220]">
                 <span>WORK NAME</span>
                 <SortIcon column="workName" />
               </button>
             </th>
 
             <th className="w-[9%] px-2 text-center">
-              <button type="button" onClick={() => handleSort("quantity")} className="mx-auto flex cursor-pointer items-center justify-center gap-1.5 font-bold transition hover:text-[#f58220]">
+              <button type="button" onClick={() => handleSort("quantity")} className="mx-auto flex cursor-pointer items-center justify-center gap-1.5 font-semibold transition hover:text-[#f58220]">
                 <span>QTY</span>
                 <SortIcon column="quantity" />
               </button>
             </th>
 
             <th className="w-[10%] px-2 text-center">
-              <button type="button" onClick={() => handleSort("unit")} className="mx-auto flex cursor-pointer items-center justify-center gap-1.5 font-bold transition hover:text-[#f58220]">
+              <button type="button" onClick={() => handleSort("unit")} className="mx-auto flex cursor-pointer items-center justify-center gap-1.5 font-semibold transition hover:text-[#f58220]">
                 <span>UNIT</span>
                 <SortIcon column="unit" />
               </button>
@@ -475,7 +475,7 @@ export default function RequirementTable({
                       category.name
                     )
                   }
-                  className="h-11 cursor-pointer border-b border-[#cbdde8] bg-[#f3f9fc] transition hover:bg-[#e7f3f9]"
+                  className="h-10 cursor-pointer border-b border-[#cbdde8] bg-[#f3f9fc] transition hover:bg-[#e7f3f9]"
                 >
                   <td
                     colSpan={2}
@@ -495,11 +495,11 @@ export default function RequirementTable({
                       </span>
 
                       <span
-                        className={`h-2 w-2 shrink-0 rounded-full ${themeClasses.dot}`}
+                        className={`h-1.5 w-1.5 shrink-0 rounded-full ${themeClasses.dot}`}
                       />
 
                       <span
-                        className={`truncate text-[9px] font-extrabold uppercase tracking-[0.35px] sm:text-[10px] ${themeClasses.text}`}
+                        className={`truncate text-[9px] font-bold uppercase tracking-[0.35px] sm:text-[10px] ${themeClasses.text}`}
                       >
                         {category.name}
                       </span>
@@ -511,15 +511,15 @@ export default function RequirementTable({
                     className="px-2"
                   >
                     <div className="flex items-center justify-end gap-2">
-                      <span className="text-[8px] font-semibold text-slate-400">
+                      <span className="text-[9px] font-semibold text-slate-400">
                         {category.subCategories.length} SUB-CATEGORIES
                       </span>
 
-                      <span className="rounded-full bg-white px-2 py-1 text-[8px] font-extrabold text-[#075a91] shadow-sm">
+                      <span className="rounded-full bg-white px-2 py-1 text-[9px] font-extrabold text-[#075a91] shadow-sm">
                         {category.works.length}
                       </span>
 
-                      <span className="text-[7px] font-bold text-slate-400">
+                      <span className="text-[8px] font-bold text-slate-400">
                         WORKS
                       </span>
                     </div>
@@ -550,25 +550,25 @@ export default function RequirementTable({
                                 subCategory.name
                               )
                             }
-                            className="h-10 cursor-pointer border-b border-[#e1ebf0] bg-white transition hover:bg-[#f7fbfd]"
+                            className="h-9 cursor-pointer border-b border-[#e1ebf0] bg-white transition hover:bg-[#f7fbfd]"
                           >
                             <td className="px-2">
-                              <span className="ml-4 flex items-center gap-2">
+                              <span className="ml-4 flex items-center gap-2 justify-center">
                                 {subExpanded ? (
                                   <ChevronDown
-                                    size={13}
-                                    className="text-[#075a91]"
+                                    size={16}
+                                    className=" mt-0.5 shrink-0 text-[#075a91]"
                                   />
                                 ) : (
                                   <ChevronRight
-                                    size={13}
-                                    className="text-slate-400"
+                                    size={16}
+                                    className="mt-0.5 shrink-0 text-slate-400"
                                   />
                                 )}
 
-                                <span className="h-1.5 w-1.5 rounded-full bg-[#f58220]" />
+                                {/* <span className="h-1.5 w-1.5 rounded-full bg-[#f58220]" /> */}
 
-                                <span className="text-[8px] font-bold text-[#36566b] sm:text-[9px]">
+                                <span className="min-w-0 break-words text-[9px] font-bold text-[#36566b] sm:text-[10px]">
                                   {category.name}
                                 </span>
                               </span>
@@ -582,14 +582,14 @@ export default function RequirementTable({
                             </td>
 
                             <td className="px-2">
-                              <span className="rounded-full bg-[#f1f7fa] px-2 py-1 text-[7px] font-bold text-[#526b7b]">
+                              <span className="rounded-full bg-[#f1f7fa] px-2 py-1 text-[7.5px] font-bold text-[#526b7b]">
                                 {subCategory.works.length} WORKS
                               </span>
                             </td>
 
                             <td className="px-2 text-center">
                               {activeTab === "ejal" ? (
-                                <span className="text-[8px] font-bold text-[#075a91]">
+                                <span className="text-[9px] font-bold text-[#075a91]">
                                   {subCategory.works.reduce(
                                     (total, work) =>
                                       total +
@@ -650,7 +650,7 @@ export default function RequirementTable({
                                         <span className="h-1 w-1 shrink-0 rounded-full bg-[#cbd5e1]" />
 
                                         <span
-                                          className={`truncate text-[7px] font-semibold sm:text-[8px] ${themeClasses.text}`}
+                                          className={`truncate text-[8px] font-semibold sm:text-[10px] ${themeClasses.text}`}
                                         >
                                           {category.name}
                                         </span>
@@ -658,7 +658,7 @@ export default function RequirementTable({
                                     </td>
 
                                     <td
-                                      className="truncate px-2 text-[8px] text-slate-400"
+                                      className="truncate px-2 text-[10px] text-slate-400"
                                       title={
                                         subCategory.name
                                       }
@@ -675,7 +675,7 @@ export default function RequirementTable({
                                       <div className="ml-2 flex min-w-0 items-center gap-1.5">
                                         <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#075a91] opacity-50 group-hover:opacity-100" />
 
-                                        <span className="truncate">
+                                        <span className="truncate text-[10px]">
                                           {work.workName}
                                         </span>
                                       </div>
