@@ -21,8 +21,6 @@ import LocationSelectorModal, {
   LocationBreadcrumb,
 } from "./LocationSelectorModal";
 
-import LocationMap from "./LocationMap";
-
 import {
   getAuthSession,
   updateAuthLocation,
@@ -38,6 +36,22 @@ import {
 
 import Header from "../common/Header";
 import { setLocationSession } from "@/utils/locationSession";
+
+import dynamic from "next/dynamic";
+
+const LocationMap = dynamic(
+  () => import("./LocationMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full w-full items-center justify-center bg-[#eaf1f4]">
+        <div className="text-[10px] font-semibold text-[#075a91]">
+          Loading map...
+        </div>
+      </div>
+    ),
+  }
+);
 
 /* =========================================================
    PROPS
