@@ -1337,10 +1337,6 @@ export default function ApprovalWorkspace({
                     </th>
 
                     <th className="px-2 text-left text-[9px]">
-                      FINANCIAL YEAR
-                    </th>
-
-                    <th className="px-2 text-left text-[9px]">
                       WORK NAME
                     </th>
 
@@ -1426,19 +1422,6 @@ export default function ApprovalWorkspace({
                             </span>
 
                           </td>
-
-
-                          {/* FINANCIAL YEAR */}
-
-                          <td className="px-2">
-
-                            <span className="rounded-full bg-[#f1f8fc] px-2 py-1 text-[8px] font-bold text-[#075a91]">
-                              {work.financialYear ??
-                                selectedFinancialYear}
-                            </span>
-
-                          </td>
-
 
                           {/* WORK NAME */}
 

@@ -20,6 +20,7 @@ interface RequirementTableProps {
   onAdd: (work: Work) => void;
   ejalCounts: Map<string, number>;
   activeTab: "ejal" | "permissible";
+  pendingWorkId?: string | null;
 }
 
 interface SubCategoryGroup {
@@ -47,12 +48,33 @@ type WorkWithOptionalFields = Work & {
   count?: number;
 };
 
+function SortIcon({
+  column,
+  sortColumn,
+  sortDirection,
+}: {
+  column: SortColumn;
+  sortColumn: SortColumn | null;
+  sortDirection: SortDirection;
+}) {
+  if (sortColumn !== column) {
+    return <ArrowUpDown size={11} className="opacity-50" />;
+  }
+
+  return sortDirection === "asc" ? (
+    <ArrowUp size={11} />
+  ) : (
+    <ArrowDown size={11} />
+  );
+}
+
 export default function RequirementTable({
   works,
   selectedIds,
   onAdd,
   ejalCounts,
   activeTab,
+  pendingWorkId = null,
 }: RequirementTableProps) {
   const [sortColumn, setSortColumn] =
     useState<SortColumn | null>(null);
@@ -386,26 +408,6 @@ export default function RequirementTable({
     setSortDirection("asc");
   };
 
-  const SortIcon = ({
-    column,
-  }: {
-    column: SortColumn;
-  }) => {
-    if (sortColumn !== column) {
-      return (
-        <ArrowUpDown
-          size={11}
-          className="opacity-50"
-        />
-      );
-    }
-
-    return sortDirection === "asc" ? (
-      <ArrowUp size={11} />
-    ) : (
-      <ArrowDown size={11} />
-    );
-  };
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto overflow-x-auto">
@@ -415,35 +417,35 @@ export default function RequirementTable({
             <th className="w-[18%] px-2 text-left">
               <button type="button" onClick={() => handleSort("theme")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-semibold transition hover:text-[#f58220]">
                 <span>THEME</span>
-                <SortIcon column="theme" />
+                <SortIcon column="theme" sortColumn={sortColumn} sortDirection={sortDirection} />
               </button>
             </th>
 
             <th className="w-[20%] px-2 text-left">
               <button type="button" onClick={() => handleSort("subTheme")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-semibold transition hover:text-[#f58220]">
                 <span>SUB THEME</span>
-                <SortIcon column="subTheme" />
+                <SortIcon column="subTheme" sortColumn={sortColumn} sortDirection={sortDirection} />
               </button>
             </th>
 
             <th className="w-[35%] px-2 text-left">
               <button type="button" onClick={() => handleSort("workName")} className="flex w-full cursor-pointer items-center gap-1.5 text-left font-semibold transition hover:text-[#f58220]">
                 <span>WORK NAME</span>
-                <SortIcon column="workName" />
+                <SortIcon column="workName" sortColumn={sortColumn} sortDirection={sortDirection} />
               </button>
             </th>
 
             <th className="w-[9%] px-2 text-center">
               <button type="button" onClick={() => handleSort("quantity")} className="mx-auto flex cursor-pointer items-center justify-center gap-1.5 font-semibold transition hover:text-[#f58220]">
                 <span>QTY</span>
-                <SortIcon column="quantity" />
+                <SortIcon column="quantity" sortColumn={sortColumn} sortDirection={sortDirection} />
               </button>
             </th>
 
             <th className="w-[10%] px-2 text-center">
               <button type="button" onClick={() => handleSort("unit")} className="mx-auto flex cursor-pointer items-center justify-center gap-1.5 font-semibold transition hover:text-[#f58220]">
                 <span>UNIT</span>
-                <SortIcon column="unit" />
+                <SortIcon column="unit" sortColumn={sortColumn} sortDirection={sortDirection} />
               </button>
             </th>
 
@@ -636,9 +638,10 @@ export default function RequirementTable({
                                   );
 
                                 const isDisabled =
-                                  activeTab === "ejal"
+                                  pendingWorkId !== null ||
+                                  (activeTab === "ejal"
                                     ? remainingCount === 0
-                                    : false;
+                                    : false);
 
                                 return (
                                   <tr
