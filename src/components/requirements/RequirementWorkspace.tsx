@@ -1054,7 +1054,6 @@ export default function RequirementsWorkspace({
                                             <th className="w-[4%] px-2 text-left">#</th>
                                             <th className="w-[18%] px-2 text-left">LOCAL NAME</th>
                                             <th className="w-[17%] px-2 text-left">WORK NAME</th>
-                                            <th className="w-[9%] px-2 text-left">UNIT</th>
                                             <th className="w-[15%] px-2 text-left">DETAIL / QTY</th>
                                             <th className="w-[14%] px-2 text-left">SUB THEME</th>
                                             <th className="w-[10%] px-2 text-left">THEME</th>
@@ -1098,7 +1097,6 @@ export default function RequirementsWorkspace({
                                                     <td className="px-2 font-mono text-[8px] text-slate-400">{String(index + 1).padStart(2, "0")}</td>
                                                     <td className="px-2 font-bold text-[#075a91]" title={entry.localWorkName}>{entry.localWorkName}</td>
                                                     <td className="px-2 font-semibold text-[#263f52]" title={work.workName}>{work.workName}</td>
-                                                    <td className="px-2 font-bold text-[#36566b]">{unitLabel}</td>
                                                     <td className="px-2 font-semibold text-[#00875a]" title={detailText}>{detailText}</td>
                                                     <td className="px-2 text-slate-500" title={work.subTheme}>{work.subTheme}</td>
                                                     <td className={`px-2 font-semibold ${themeClass}`} title={work.theme}>{work.theme}</td>

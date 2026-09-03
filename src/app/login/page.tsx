@@ -74,56 +74,57 @@ export default function LoginPage() {
       role: user.role,
     });
 
-    /*
-     * =====================================================
-     * ROLE BASED REDIRECTION
-     * =====================================================
-     */
 
-    if (user.role === "Planner") {
-      if (!proposalId) {
-        setError(
-          "Proposal ID is missing. Please start planning from the proposal."
-        );
-        setIsLoading(false);
-        return;
-      }
 
-      router.push(
-        `/proposal/${proposalId}/availability`
-      );
 
-      return;
-    }
+    const dashboardUrl = proposalId
+      ? `/dashboard?proposalId=${encodeURIComponent(proposalId)}`
+      : "/dashboard";
 
-    /*
-     * State / District / Block / Approver
-     * go to location page for now.
-     */
+    router.push(dashboardUrl);
 
-    if (
-      user.role === "National Admin" ||
-      user.role === "State Admin" ||
-      user.role === "District Admin" ||
-      user.role === "Block Admin" ||
-      user.role === "Approver"
-    ) {
-      if (!proposalId) {
-        setError(
-          "Proposal ID is missing. Please start from the proposal."
-        );
-        setIsLoading(false);
-        return;
-      }
 
-      router.push(
-        `/location?proposalId=${encodeURIComponent(
-          proposalId
-        )}`
-      );
 
-      return;
-    }
+
+    // if (user.role === "Planner") {
+    //   if (!proposalId) {
+    //     setError(
+    //       "Proposal ID is missing. Please start planning from the proposal."
+    //     );
+    //     setIsLoading(false);
+    //     return;
+    //   }
+
+    //   router.push(
+    //     `/proposal/${proposalId}/availability`
+    //   );
+
+    //   return;
+    // }
+
+    // if (
+    //   user.role === "National Admin" ||
+    //   user.role === "State Admin" ||
+    //   user.role === "District Admin" ||
+    //   user.role === "Block Admin" ||
+    //   user.role === "Approver"
+    // ) {
+    //   if (!proposalId) {
+    //     setError(
+    //       "Proposal ID is missing. Please start from the proposal."
+    //     );
+    //     setIsLoading(false);
+    //     return;
+    //   }
+
+    //   router.push(
+    //     `/location?proposalId=${encodeURIComponent(
+    //       proposalId
+    //     )}`
+    //   );
+
+    //   return;
+    // }
 
     setIsLoading(false);
   };
