@@ -58,6 +58,7 @@ const STEP_FUNNEL = [
 // Three-tier approval pipeline
 const PIPELINE = {
   submitted: 104300,
+  panchayat: { ownWorksAdded: 0 },
   block: { approved: 68400, returned: 17900, pending: 18000, ownWorksAdded: 5100 },
   district: { approved: 41250, returned: 9150, pending: 18000, ownWorksAdded: 2300 },
 };
@@ -299,7 +300,7 @@ function ScaleFlowFunnel() {
   const stages = [
     {
       label: "Panchayat", hindi: "पंचायत", total: NATIONAL.panchayats, pass: PIPELINE.submitted,
-      passLabel: "GSR submitted", tone: "primary",
+      passLabel: "GSR submitted", tone: "primary", added: PIPELINE.panchayat.ownWorksAdded,
     },
     {
       label: "Block", hindi: "खंड", total: PIPELINE.submitted, pass: PIPELINE.block.approved,
@@ -393,14 +394,13 @@ function OverviewTab() {
         <SectionHeader
           eyebrow="Governance Hierarchy"
           title="Scale & approval flow"
-          description="Every plan originates at Panchayat level and is reviewed upward through Block and District. Each tier can also add its own works using the same five-step process."
         />
         <ScaleFlowFunnel />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="vgpp-card rounded-lg p-5 lg:col-span-2">
-          <SectionHeader eyebrow="Panchayat Level · पंचदृष्टि" title="Five-step planning progress" />
+          <SectionHeader eyebrow="Panchayat Level · पंच सूत्र" title="Five-step planning progress" />
           <div className="flex flex-col gap-3">
             {STEP_FUNNEL.map((s, i) => {
               const pct = (s.count / NATIONAL.panchayats) * 100;
@@ -935,7 +935,7 @@ export default function VGPPDashboard({ proposalId = "" }: VGPPDashboardProps) {
                 </div>
                 <div>
                   <div className="text-sm font-semibold" style={{ color: "var(--ink)" }}>VGPP MIS</div>
-                  <div className="text-[11px]" style={{ color: "var(--ink-faint)" }}>पंचदृष्टि · Rollout Monitor</div>
+                  <div className="text-[11px]" style={{ color: "var(--ink-faint)" }}>पंच सूत्र · Rollout Monitor</div>
                 </div>
               </div>
             </div>

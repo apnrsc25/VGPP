@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_LOCATION, SessionLocation } from "@/utils/locationSession";
 import {
     CheckCircle2,
     ClipboardCheck,
@@ -9,6 +10,8 @@ import {
     Stamp,
     MapPinned,
 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { useState } from "react";
 
 
 interface SelectedWork {
@@ -26,12 +29,43 @@ interface ApprovalRightPanelProps {
     proposalId: string;
 }
 
+
+
+const createWorkCode = ({
+    state,
+    district,
+    block,
+    panchayat,
+}: {
+    state: string;
+    district: string;
+    block: string;
+    panchayat: string;
+}) => {
+    const normalize = (value: string) =>
+        value
+            .trim()
+            .toUpperCase()
+            .replace(/[^A-Z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+
+    return [
+        state,
+        district,
+        block,
+        panchayat,
+    ]
+        .map(normalize)
+        .join("-");
+};
+
 export default function ApprovalRightPanel({
     finalWorks,
     displayedWorks,
     proposalId,
 }: ApprovalRightPanelProps) {
 
+    const [location] = useState<SessionLocation>(DEFAULT_LOCATION);
     const geotaggedCount = finalWorks.filter(
         (work) => work.geotagged
     ).length;
@@ -310,7 +344,7 @@ export default function ApprovalRightPanel({
 
                                         {/* SEAL */}
 
-                                        <div className="flex h-11 w-11 rotate-[-8deg] items-center justify-center rounded-full border border-[#c8b879] text-center text-[5px] font-bold uppercase leading-[1.25] text-[#b6a66c] opacity-70">
+                                        {/* <div className="flex h-11 w-11 rotate-[-8deg] items-center justify-center rounded-full border border-[#c8b879] text-center text-[5px] font-bold uppercase leading-[1.25] text-[#b6a66c] opacity-70">
 
                                             Gram
                                             <br />
@@ -318,6 +352,20 @@ export default function ApprovalRightPanel({
                                             <br />
                                             Seal
 
+                                        </div> */}
+
+                                        <div className="flex h-14 w-14 items-center justify-center border border-[#c8b879] bg-white p-1">
+                                            <QRCodeSVG
+                                                value={createWorkCode({
+                                                    state: location.state,
+                                                    district: location.district,
+                                                    block: location.block,
+                                                    panchayat: location.panchayat,
+                                                })}
+                                                size={48}
+                                                level="M"
+                                                includeMargin={false}
+                                            />
                                         </div>
 
                                     </div>
