@@ -85,19 +85,41 @@ const THEME_SPLIT = [
   { theme: "Climate Resilience", pct: 16, works: 283500 },
 ];
 
+// const MONTHLY_TREND = [
+//   { month: "Apr", submitted: 4200, approved: 1100 },
+//   { month: "May", submitted: 11800, approved: 3900 },
+//   { month: "Jun", submitted: 22600, approved: 9800 },
+//   { month: "Jul", submitted: 37500, approved: 17200 },
+//   { month: "Aug", submitted: 54100, approved: 26400 },
+//   { month: "Sep", submitted: 68900, approved: 34700 },
+//   { month: "Oct", submitted: 81200, approved: 41300 },
+//   { month: "Nov", submitted: 91700, approved: 47600 },
+//   { month: "Dec", submitted: 98400, approved: 52100 },
+//   { month: "Jan", submitted: 101600, approved: 55800 },
+//   { month: "Feb", submitted: 103400, approved: 58900 },
+//   { month: "Mar", submitted: 104300, approved: 61250 },
+// ];
+
+
 const MONTHLY_TREND = [
-  { month: "Apr", submitted: 4200, approved: 1100 },
-  { month: "May", submitted: 11800, approved: 3900 },
-  { month: "Jun", submitted: 22600, approved: 9800 },
-  { month: "Jul", submitted: 37500, approved: 17200 },
-  { month: "Aug", submitted: 54100, approved: 26400 },
-  { month: "Sep", submitted: 68900, approved: 34700 },
-  { month: "Oct", submitted: 81200, approved: 41300 },
-  { month: "Nov", submitted: 91700, approved: 47600 },
-  { month: "Dec", submitted: 98400, approved: 52100 },
-  { month: "Jan", submitted: 101600, approved: 55800 },
-  { month: "Feb", submitted: 103400, approved: 58900 },
-  { month: "Mar", submitted: 104300, approved: 61250 },
+  { month: "Apr", submitted: 800, approved: 200 },
+  { month: "May", submitted: 1800, approved: 500 },
+  { month: "Jun", submitted: 3200, approved: 900 },
+  { month: "Jul", submitted: 5200, approved: 1500 },
+  { month: "Aug", submitted: 7800, approved: 2200 },
+
+  // Submitted starts rising sharply from September
+  { month: "Sep", submitted: 28000, approved: 6000 },
+  { month: "Oct", submitted: 65000, approved: 15000 },
+  { month: "Nov", submitted: 105000, approved: 42000 },
+
+  // Submitted starts declining
+  { month: "Dec", submitted: 72000, approved: 70000 },
+  { month: "Jan", submitted: 25000, approved: 115000 },
+
+  // Approved declines through February-March
+  { month: "Feb", submitted: 9000, approved: 58000 },
+  { month: "Mar", submitted: 2000, approved: 9000 },
 ];
 
 const STATES = [
@@ -155,27 +177,78 @@ function blocksForDistrict(district: DistrictRow): BlockRow[] {
 
 const TOKEN_STYLES = `
   :root {
-    --bg: #F1F4F1; --surface: #FFFFFF; --surface-2: #F7F9F7; --border: #DDE3DC;
-    --ink: #152420; --ink-muted: #5B6B63; --ink-faint: #8A968F;
-    --primary: #0F5D52; --primary-ink: #FFFFFF; --primary-tint: #E4F0EC;
-    --accent: #B8791E; --accent-tint: #F5E9D4;
-    --success: #3F8B52; --success-tint: #E6F2E8;
-    --warning: #C68A1F; --warning-tint: #FBF0DC;
-    --danger: #A8422B; --danger-tint: #F7E5DF;
-    --info: #3E6E8E; --info-tint: #E5EEF3;
-    --shadow: 0 1px 2px rgba(21,36,32,0.06), 0 1px 0 rgba(21,36,32,0.04);
-  }
-  .dark {
-    --bg: #0B1614; --surface: #12201D; --surface-2: #0F1B18; --border: #22352F;
-    --ink: #E9F2EE; --ink-muted: #93A79E; --ink-faint: #64766D;
-    --primary: #47B39C; --primary-ink: #06110F; --primary-tint: #163932;
-    --accent: #E0B24F; --accent-tint: #362912;
-    --success: #64C17E; --success-tint: #133224;
-    --warning: #E0B24F; --warning-tint: #362912;
-    --danger: #E37A5E; --danger-tint: #3A1E17;
-    --info: #7BB0CE; --info-tint: #132530;
-    --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 1px 0 rgba(0,0,0,0.2);
-  }
+  /* Base */
+  --bg: #F4F7FA;
+  --surface: #FFFFFF;
+  --surface-2: #F8FAFC;
+  --border: #D9E2EA;
+
+  /* Text */
+  --ink: #172B3A;
+  --ink-muted: #5F7180;
+  --ink-faint: #8A9AA6;
+
+  /* Brand */
+  --primary: #075A91;
+  --primary-ink: #FFFFFF;
+  --primary-tint: #E6F1F8;
+
+  /* Accent */
+  --accent: #F58220;
+  --accent-ink: #FFFFFF;
+  --accent-tint: #FFF0E3;
+
+  /* Status */
+  --success: #3F8B52;
+  --success-tint: #E7F3EA;
+
+  --warning: #F58220;
+  --warning-tint: #FFF0E3;
+
+  --danger: #C0392B;
+  --danger-tint: #F9E5E2;
+
+  --info: #075A91;
+  --info-tint: #E6F1F8;
+
+  --shadow:
+    0 1px 2px rgba(7, 90, 145, 0.06),
+    0 1px 0 rgba(7, 90, 145, 0.04);
+}
+.dark {
+  --bg: #0B1822;
+  --surface: #102534;
+  --surface-2: #132C3D;
+  --border: #23465B;
+
+  --ink: #EDF5FA;
+  --ink-muted: #A6BAC8;
+  --ink-faint: #718997;
+
+  --primary: #3A8CC4;
+  --primary-ink: #FFFFFF;
+  --primary-tint: #153C55;
+
+  --accent: #FF9A45;
+  --accent-ink: #1A1008;
+  --accent-tint: #4A2B14;
+
+  --success: #65C17A;
+  --success-tint: #173823;
+
+  --warning: #FFB04F;
+  --warning-tint: #4A3215;
+
+  --danger: #E87961;
+  --danger-tint: #421F18;
+
+  --info: #6FAED2;
+  --info-tint: #163548;
+
+  --shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.2);
+}
   .vgpp-root { background: var(--bg); color: var(--ink); }
   .vgpp-card { background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); }
   .vgpp-tick { stroke: var(--border); }
@@ -282,10 +355,10 @@ function TabButton({ active, onClick, icon: Icon, children }: TabButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium transition-colors text-left"
+      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium transition-colors text-left cursor-pointer"
       style={{
-        background: active ? "var(--primary-tint)" : "transparent",
-        color: active ? "var(--primary)" : "var(--ink-muted)",
+        background: active ? "var(--primary)" : "transparent",
+        color: active ? "var(--primary-ink)" : "var(--ink-muted)",
       }}
     >
       <Icon size={16} strokeWidth={2.25} />
@@ -520,7 +593,7 @@ function PipelineTab() {
         <SectionHeader
           eyebrow="Three-Tier Workflow"
           title="Panchayat → Block → District"
-          description="A plan submitted at Panchayat level must clear review at both Block and District before it is final. Either tier may return a plan for correction, which restarts the cycle at the level below."
+          // description="A plan submitted at Panchayat level must clear review at both Block and District before it is final. Either tier may return a plan for correction, which restarts the cycle at the level below."
         />
         <div className="flex items-center gap-2 flex-wrap text-xs" style={{ color: "var(--ink-muted)" }}>
           <Badge tone="primary" icon={FileCheck}>Submitted</Badge>
@@ -665,7 +738,7 @@ function GeoTab() {
         <SectionHeader
           eyebrow="Drill Down"
           title="Geographic performance"
-          description="Follow the hierarchy from national rollup down to individual blocks. Figures below the state level are illustrative estimates for template purposes."
+          // description="Follow the hierarchy from national rollup down to individual blocks. Figures below the state level are illustrative estimates for template purposes."
           right={
             <div className="flex items-center gap-1 text-sm flex-wrap justify-end" style={{ color: "var(--ink-muted)" }}>
               {path.map((p, i) => (
@@ -958,10 +1031,10 @@ export default function VGPPDashboard({ proposalId = "" }: VGPPDashboardProps) {
                 </span>
                 <span>Last synced 12 minutes ago</span>
               </div>
-              {/* <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <div className="hidden sm:flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-md" style={{ background: "var(--accent-tint)", color: "var(--accent)" }}>
                   <Info size={13} />
-                  Illustrative data for template purposes
+                  Illustrative data
                 </div>
                 <button
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -970,7 +1043,7 @@ export default function VGPPDashboard({ proposalId = "" }: VGPPDashboardProps) {
                 >
                   {theme === "light" ? <Moon size={15} style={{ color: "var(--ink-muted)" }} /> : <Sun size={15} style={{ color: "var(--ink-muted)" }} />}
                 </button>
-              </div> */}
+              </div>
             </div>
 
             {/* {showInfo && (

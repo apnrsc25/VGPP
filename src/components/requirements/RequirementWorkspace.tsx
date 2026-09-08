@@ -354,10 +354,10 @@ export default function RequirementsWorkspace({
             ? Number(pendingWork.value || 0)
             : pendingWork.unit === "meter_square"
                 ? Number(pendingWork.length || 0) *
-                  Number(pendingWork.width || 0)
+                Number(pendingWork.width || 0)
                 : Number(pendingWork.length || 0) *
-                  Number(pendingWork.width || 0) *
-                  Number(pendingWork.depth || 0)
+                Number(pendingWork.width || 0) *
+                Number(pendingWork.depth || 0)
         : 0;
 
     const pendingFormValid = Boolean(
@@ -367,10 +367,10 @@ export default function RequirementsWorkspace({
             ? Number(pendingWork.value) > 0
             : pendingWork.unit === "meter_square"
                 ? Number(pendingWork.length) > 0 &&
-                  Number(pendingWork.width) > 0
+                Number(pendingWork.width) > 0
                 : Number(pendingWork.length) > 0 &&
-                  Number(pendingWork.width) > 0 &&
-                  Number(pendingWork.depth) > 0)
+                Number(pendingWork.width) > 0 &&
+                Number(pendingWork.depth) > 0)
     );
 
     const submitPendingWork = () => {
@@ -937,6 +937,7 @@ export default function RequirementsWorkspace({
                         activeTab={activeTab}
                         onAdd={handleAdd}
                         pendingWorkId={pendingWork?.work.id ?? null}
+                        searchActive={search.trim().length > 0}
                     />
 
                 </section>
@@ -1047,18 +1048,18 @@ export default function RequirementsWorkspace({
                                 {categories.map((category) => { const count = selectedWorks.filter((work) => work.theme === category.key).length; return <div key={category.key} className="flex flex-col items-center justify-center border-r-2 border-[#e2ebf0] last:border-r-0 bg-[#eef8f3]"><span className={`text-[17px] font-extrabold sm:text-[19px] ${category.color}`}>{count}</span><span className="text-[7px] font-bold tracking-[0.4px] text-[#36566b] sm:text-[8px]">{category.label}</span></div>; })}
                             </div>
                             <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
-                                <table className="w-full min-w-[980px] table-fixed border-collapse text-[10px] sm:text-[11px]">
+                                <table className="w-full min-w-[940px] table-fixed border-collapse text-[10px] sm:text-[11px]">
                                     <thead className="sticky top-0 z-20 bg-[#003b63] text-white shadow-sm">
                                         <tr className="h-9 text-[8px] uppercase tracking-[0.5px] sm:text-[9px]">
-                                            <th className="w-[6%] px-2 text-center">REMOVE</th>
-                                            <th className="w-[4%] px-2 text-left">#</th>
-                                            <th className="w-[18%] px-2 text-left">LOCAL NAME</th>
-                                            <th className="w-[17%] px-2 text-left">WORK NAME</th>
-                                            <th className="w-[15%] px-2 text-left">DETAIL / QTY</th>
-                                            <th className="w-[14%] px-2 text-left">SUB THEME</th>
-                                            <th className="w-[10%] px-2 text-left">THEME</th>
-                                            <th className="w-[4%] px-2 text-center">COUNT</th>
-                                            <th className="w-[6%] px-2 text-center">EDIT</th>
+                                            <th className="w-[3%] px-2 text-center">REMOVE</th>
+                                            <th className="w-[3%] px-2 text-left">#</th>
+                                            <th className="w-[8%] px-2 text-left">LOCAL NAME</th>
+                                            <th className="w-[10%] px-2 text-left">WORK NAME</th>
+                                            <th className="w-[5%] px-2 text-left">DETAIL / QTY</th>
+                                            <th className="w-[8%] px-2 text-left">SUB THEME</th>
+                                            <th className="w-[6%] px-2 text-left">THEME</th>
+                                            <th className="w-[3%] px-2 text-center">COUNT</th>
+                                            <th className="w-[5%] px-2 text-center">EDIT</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1090,7 +1091,7 @@ export default function RequirementsWorkspace({
                                                     : `${entry.length || 0} × ${entry.width || 0} × ${entry.depth || 0} = ${entry.quantity} ${unitLabel}`;
 
                                             return (
-                                                <tr key={`selected-${entry.entryId}`} className="group min-h-10 border-b border-[#e4edf2] transition hover:bg-[#fff8f4]">
+                                                <tr key={`selected-${entry.entryId}`} className="group h-10 border-b border-[#e4edf2] transition hover:bg-[#fff8f4]">
                                                     <td className="px-2 text-center">
                                                         <button type="button" onClick={() => handleRemove(entry.entryId)} title="Remove work" className="mx-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#fecaca] bg-[#fff5f5] text-[13px] font-bold text-[#dc2626] transition hover:bg-[#dc2626] hover:text-white active:scale-90">−</button>
                                                     </td>
