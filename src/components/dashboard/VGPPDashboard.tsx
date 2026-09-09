@@ -79,10 +79,10 @@ const RETURN_REASONS = [
 ];
 
 const THEME_SPLIT = [
-  { theme: "Water Security", pct: 34, works: 601800 },
+  { theme: "Water Security", pct: 48, works: 601800 },
   { theme: "Rural Infrastructure", pct: 27, works: 477900 },
-  { theme: "Livelihood Assets", pct: 23, works: 407200 },
-  { theme: "Climate Resilience", pct: 16, works: 283500 },
+  { theme: "Livelihood Assets", pct: 16, works: 407200 },
+  { theme: "Climate Resilience", pct: 9, works: 283500 },
 ];
 
 // const MONTHLY_TREND = [
@@ -473,7 +473,7 @@ function OverviewTab() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="vgpp-card rounded-lg p-5 lg:col-span-2">
-          <SectionHeader eyebrow="Panchayat Level · पंच सूत्र" title="Five-step planning progress" />
+          <SectionHeader eyebrow="Panchayat Level · पंचसूत्र" title="Five-step planning progress" />
           <div className="flex flex-col gap-3">
             {STEP_FUNNEL.map((s, i) => {
               const pct = (s.count / NATIONAL.panchayats) * 100;
@@ -1008,7 +1008,7 @@ export default function VGPPDashboard({ proposalId = "" }: VGPPDashboardProps) {
                 </div>
                 <div>
                   <div className="text-sm font-semibold" style={{ color: "var(--ink)" }}>VGPP MIS</div>
-                  <div className="text-[11px]" style={{ color: "var(--ink-faint)" }}>पंच सूत्र · Rollout Monitor</div>
+                  <div className="text-[11px]" style={{ color: "var(--ink-faint)" }}>पंचसूत्र · Rollout Monitor</div>
                 </div>
               </div>
             </div>
