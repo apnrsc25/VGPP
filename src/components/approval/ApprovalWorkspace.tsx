@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState, type DragEvent } from "react";
 import { FINANCIAL_YEARS } from "@/constants/financialYear";
+import { useRouter } from "next/navigation";
 
 export interface SelectedWork {
   id: string;
@@ -41,7 +42,7 @@ export default function ApprovalWorkspace({
 }: ApprovalWorkspaceProps) {
   const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
   const [rightDrawerOpen, setRightDrawerOpen] = useState(false);
-
+  const router = useRouter();
   const availableWorks = useMemo(
     () => selectedWorks.slice(0, 30),
     [selectedWorks],
@@ -342,21 +343,53 @@ export default function ApprovalWorkspace({
    * ---------------------------------------------------------
    */
 
+
   const handleSubmit = () => {
     if (finalWorks.length === 0) {
       return;
     }
 
-    /*
-     * Priority is generated from the current order.
-     */
     const worksWithPriority = finalWorks.map((work, index) => ({
       ...work,
       priority: index + 1,
     }));
 
-    console.log("Submitting works with priority:", worksWithPriority);
+    const resolutionsKey =
+      `proposal_conclusion_resolutions_${proposalId}`;
+
+    const existingBatches = JSON.parse(
+      sessionStorage.getItem(resolutionsKey) || "[]"
+    );
+
+    const resolutionId =
+      `RES-${String(existingBatches.length + 1).padStart(3, "0")}`;
+
+    const newResolution = {
+      resolutionId,
+      createdAt: new Date().toISOString(),
+      records: worksWithPriority.map((work) => ({
+        work,
+        status: "PENDING",
+        events: [
+          `Added to ${resolutionId} from Approval`,
+        ],
+      })),
+    };
+
+    sessionStorage.setItem(
+      resolutionsKey,
+      JSON.stringify([...existingBatches, newResolution])
+    );
+
+    // Keep the current submission available for compatibility.
+    sessionStorage.setItem(
+      `proposal_conclusion_works_${proposalId}`,
+      JSON.stringify(worksWithPriority)
+    );
+
+    router.push(`/proposal/${proposalId}/conclusion`);
   };
+
 
   return (
     <div className="relative flex h-[calc(100dvh-128px)] min-h-0 w-full flex-col overflow-hidden bg-[#f3f7fa]">
@@ -477,11 +510,10 @@ export default function ApprovalWorkspace({
                               title={
                                 isSelected ? "Already Selected" : "Select work"
                               }
-                              className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full border transition-all active:scale-90 ${
-                                isSelected
-                                  ? "cursor-not-allowed border-slate-200 bg-slate-50 text-slate-300"
-                                  : "cursor-pointer border-[#9ed1b8] bg-[#f0fbf5] text-[#00875a] hover:border-[#00875a] hover:bg-[#00875a] hover:text-white"
-                              }`}
+                              className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full border transition-all active:scale-90 ${isSelected
+                                ? "cursor-not-allowed border-slate-200 bg-slate-50 text-slate-300"
+                                : "cursor-pointer border-[#9ed1b8] bg-[#f0fbf5] text-[#00875a] hover:border-[#00875a] hover:bg-[#00875a] hover:text-white"
+                                }`}
                             >
                               {isSelected ? (
                                 <Check size={12} />
@@ -656,9 +688,8 @@ export default function ApprovalWorkspace({
         ==================================================== */}
 
         <div
-          className={`absolute inset-y-0 left-0 z-[1000] w-1/2 p-2 transition-transform duration-300 ease-out ${
-            leftDrawerOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`absolute inset-y-0 left-0 z-[1000] w-1/2 p-2 transition-transform duration-300 ease-out ${leftDrawerOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           <div className="h-full overflow-hidden rounded-[10px] border border-[#d5e2ea] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
             <ApprovalMap proposalId={proposalId} selectedWorks={finalWorks} />
@@ -670,9 +701,8 @@ export default function ApprovalWorkspace({
         ==================================================== */}
 
         <div
-          className={`absolute inset-y-0 right-0 z-[1000] w-1/2 p-2 transition-transform duration-300 ease-out ${
-            rightDrawerOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`absolute inset-y-0 right-0 z-[1000] w-1/2 p-2 transition-transform duration-300 ease-out ${rightDrawerOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[10px] border border-[#d5e2ea] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
             <div className="min-h-0 flex-1 overflow-auto">
@@ -688,11 +718,10 @@ export default function ApprovalWorkspace({
                 type="button"
                 onClick={handlePrint}
                 disabled={finalWorks.length === 0}
-                className={`inline-flex h-8 items-center gap-1.5 rounded-[5px] px-4 text-[8px] font-extrabold transition ${
-                  finalWorks.length === 0
-                    ? "cursor-not-allowed bg-slate-200 text-slate-400"
-                    : "cursor-pointer bg-[#075a91] text-white hover:bg-[#003b63]"
-                }`}
+                className={`inline-flex h-8 items-center gap-1.5 rounded-[5px] px-4 text-[8px] font-extrabold transition ${finalWorks.length === 0
+                  ? "cursor-not-allowed bg-slate-200 text-slate-400"
+                  : "cursor-pointer bg-[#075a91] text-white hover:bg-[#003b63]"
+                  }`}
               >
                 <Printer size={11} />
                 PRINT
@@ -743,9 +772,8 @@ export default function ApprovalWorkspace({
       <div className="z-[1200] flex h-[52px] shrink-0 items-center justify-between border-t border-[#d5e2ea] bg-white px-3 shadow-[0_-3px_12px_rgba(0,59,99,0.08)] sm:h-[56px] sm:px-4">
         <div className="flex min-w-0 items-center gap-2">
           <span
-            className={`h-2 w-2 shrink-0 rounded-full ${
-              finalWorks.length > 0 ? "bg-[#008f6a]" : "bg-[#f58220]"
-            }`}
+            className={`h-2 w-2 shrink-0 rounded-full ${finalWorks.length > 0 ? "bg-[#008f6a]" : "bg-[#f58220]"
+              }`}
           />
 
           <div className="min-w-0">
@@ -757,9 +785,8 @@ export default function ApprovalWorkspace({
 
             <p className="hidden text-[6px] text-slate-400 sm:block">
               {finalWorks.length > 0
-                ? `${finalWorks.length} work${
-                    finalWorks.length > 1 ? "s" : ""
-                  } ready for approval`
+                ? `${finalWorks.length} work${finalWorks.length > 1 ? "s" : ""
+                } ready for approval`
                 : "Select works before submitting"}
             </p>
           </div>
@@ -769,11 +796,10 @@ export default function ApprovalWorkspace({
           type="button"
           disabled={finalWorks.length === 0}
           onClick={handleSubmit}
-          className={`flex h-8 shrink-0 items-center gap-1.5 rounded-[6px] px-4 text-[8px] font-extrabold transition sm:h-9 sm:px-5 sm:text-[9px] ${
-            finalWorks.length === 0
-              ? "cursor-not-allowed bg-slate-200 text-slate-400"
-              : "cursor-pointer bg-[#008f6a] text-white hover:bg-[#007b5c]"
-          }`}
+          className={`flex h-8 shrink-0 items-center gap-1.5 rounded-[6px] px-4 text-[8px] font-extrabold transition sm:h-9 sm:px-5 sm:text-[9px] ${finalWorks.length === 0
+            ? "cursor-not-allowed bg-slate-200 text-slate-400"
+            : "cursor-pointer bg-[#008f6a] text-white hover:bg-[#007b5c]"
+            }`}
         >
           <CheckCircle2 size={12} />
           SUBMIT FOR APPROVAL
